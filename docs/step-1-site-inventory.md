@@ -113,6 +113,7 @@ In order: **HOME, ABOUT, SHOP, GALLERY, FAQ, ORDER**
 > | T-shirts | R210 | **R240** | Black, Navy, Olive, Purple, Red, Cream (6) |
 > | Baggy T-shirts | R270 | R280 | White, Grey, Sand, Yellow, Mustard, Orange, Red, Green, Sky, Royal Blue (10) |
 > | Sweaters | R360 | R390 | White, Slate, Royal Blue, Green, Yellow, Mustard, Coral, Red, Pink (9) |
+> | Hoodies | R400 | R450 | White, Grey, Royal Blue, Green, Mustard, Orange, Red, Pink (8) |
 >
 > - The "SAVE R30 vs R230→R210" discrepancy is resolved: the real was-price is **R240**, so the
 >   badge was right and the R230 read from the video was wrong.
@@ -120,7 +121,8 @@ In order: **HOME, ABOUT, SHOP, GALLERY, FAQ, ORDER**
 >   shows one tee product, so they are **merged into a single "T-Shirt"** — flag if that's wrong.
 > - Photography now lives in `public/products/<product>/<colour>.jpg`; the real emblem was
 >   extracted to `public/brand/emblem.png`.
-> - Still awaiting photography and a confirmed was-price for the **Hoodie** (R400).
+> - **All five products are now photographed** — 39 colourways in total. Nothing in the catalogue
+>   is a placeholder any more.
 > - The owner's listings write "sweater's" / "Sweater's"; corrected to plain plurals in site copy.
 
 | Product | Price | Was | Description (verbatim from card) | Colours seen | Sizes |

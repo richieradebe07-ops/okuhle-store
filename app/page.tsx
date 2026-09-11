@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Container, Section } from "@/components/Section";
 import { ProductCard } from "@/components/ProductCard";
 import { EmailSignup } from "@/components/EmailSignup";
+import { PrimaryCta } from "@/components/PrimaryCta";
 import { products, lookbook } from "@/lib/products";
 import { formatRand, site } from "@/lib/site";
 import { layBy, loyalty } from "@/lib/loyalty";
@@ -33,14 +34,19 @@ export default function Home() {
               <p style={{ color: "var(--fg-muted)", maxWidth: "34rem", margin: "1.5rem 0 2rem" }}>
                 {site.heroSub}
               </p>
-              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-                <Link className="btn" href="/shop">
-                  Shop the drop
-                </Link>
-                <Link className="btn btn-ghost" href="/loyalty">
-                  Free rewards
-                </Link>
-              </div>
+              <p
+                style={{
+                  color: "var(--fg)",
+                  fontSize: "1.05rem",
+                  margin: "-1rem 0 1.75rem",
+                }}
+              >
+                For people who give a damn what they put on.
+              </p>
+              <PrimaryCta
+                showSupport
+                secondary={{ label: "or browse the collection", href: "/shop" }}
+              />
             </div>
 
             <div
@@ -218,7 +224,7 @@ export default function Home() {
       </Section>
 
       {/* Email */}
-      <Section eyebrow="Stay close" title="First access to every drop">
+      <Section id="join" eyebrow="Stay close" title="First access to every drop">
         <EmailSignup />
       </Section>
     </>

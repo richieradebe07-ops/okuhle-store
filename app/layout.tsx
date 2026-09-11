@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { WhatsAppBar } from "@/components/WhatsAppBar";
+import { StickyBar } from "@/components/StickyBar";
 import { WishlistProvider } from "@/components/WishlistProvider";
 import { Countdown } from "@/components/Countdown";
+import { VisitorStateProvider } from "@/components/VisitorStateProvider";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -41,13 +42,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
+        <VisitorStateProvider>
         <WishlistProvider>
           <Countdown />
           <Header />
           <main>{children}</main>
           <Footer />
-          <WhatsAppBar />
+          <StickyBar />
         </WishlistProvider>
+        </VisitorStateProvider>
       </body>
     </html>
   );

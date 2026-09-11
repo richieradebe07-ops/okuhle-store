@@ -25,6 +25,7 @@ export const site = {
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "Shop", href: "/shop" },
+    { label: "Drops", href: "/drops" },
     { label: "Gallery", href: "/gallery" },
     { label: "Rewards", href: "/loyalty" },
     { label: "FAQ", href: "/faq" },
@@ -34,6 +35,7 @@ export const site = {
     explore: [
       { label: "Our Story", href: "/about" },
       { label: "Shop", href: "/shop" },
+      { label: "Drops", href: "/drops" },
       { label: "Gallery", href: "/gallery" },
       { label: "Rewards", href: "/loyalty" },
       { label: "FAQ", href: "/faq" },

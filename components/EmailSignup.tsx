@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useVisitorState } from "./VisitorStateProvider";
 
 /**
  * Newsletter capture. Posts to /api/subscribe, which forwards to ConvertKit
@@ -9,6 +10,7 @@ import { useState } from "react";
 export function EmailSignup() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const { markSubscribed } = useVisitorState();
   const [message, setMessage] = useState("");
 
   async function submit(e: React.FormEvent) {
@@ -24,6 +26,7 @@ export function EmailSignup() {
       if (!res.ok) throw new Error(data.error ?? "Something went wrong.");
       setState("done");
       setMessage(data.message ?? "You're on the list.");
+      markSubscribed();
     } catch (err) {
       setState("error");
       setMessage(err instanceof Error ? err.message : "Something went wrong.");

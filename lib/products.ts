@@ -49,7 +49,7 @@ export const products: Product[] = [
     category: "golf-tees",
     price: 270,
     compareAtPrice: 300,
-    tagline: "Collared, considered, everyday.",
+    tagline: "The one you style a hundred ways and still feel like yourself in.",
     description:
       "A collared golf tee with the Okuhle emblem stitched at the chest. Structured enough for a Sunday lunch, easy enough for a Tuesday.",
     fit: "Regular fit, true to size. Take one size up for a relaxed drape.",
@@ -74,7 +74,7 @@ export const products: Product[] = [
     category: "t-shirts",
     price: 210,
     compareAtPrice: 240,
-    tagline: "The emblem, full size.",
+    tagline: "The one you reach for without thinking.",
     description:
       "Our everyday tee, printed with the full-size Okuhle emblem front and centre. Mid-weight cotton that holds its shape wash after wash.",
     fit: "Regular fit, true to size.",
@@ -99,7 +99,7 @@ export const products: Product[] = [
     category: "baggy-tees",
     price: 270,
     compareAtPrice: 280,
-    tagline: "Wear & own your beauty.",
+    tagline: "Room to breathe. Nothing to prove.",
     description:
       "A dropped-shoulder, wide-body tee for when the fit should do the talking. Emblem at the chest, “Wear & own your beauty” at the hem.",
     fit: "Oversized by design. Take your usual size for the intended drape.",
@@ -128,7 +128,7 @@ export const products: Product[] = [
     category: "sweaters",
     price: 360,
     compareAtPrice: 390,
-    tagline: "For the cold months and the cold takes.",
+    tagline: "Layered, considered, deliberate.",
     description:
       "A crew-neck sweater with the emblem at the chest. Brushed inside, structured outside, built to survive a KZN winter and several summers.",
     fit: "Regular fit with room to layer.",
@@ -156,7 +156,7 @@ export const products: Product[] = [
     category: "hoodies",
     price: 400,
     compareAtPrice: 450,
-    tagline: "The heavyweight.",
+    tagline: "For the cold mornings and the long walks home.",
     description:
       "Our warmest piece. Lined hood, deep pocket, emblem at the chest. The one you will end up wearing more than anything else you own.",
     fit: "Regular fit with room to layer.",

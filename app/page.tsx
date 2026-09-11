@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container, Section } from "@/components/Section";
 import { ProductCard } from "@/components/ProductCard";
 import { EmailSignup } from "@/components/EmailSignup";
-import { Emblem } from "@/components/Logo";
-import { products } from "@/lib/products";
+import { products, lookbook } from "@/lib/products";
 import { site } from "@/lib/site";
 
 export default function Home() {
@@ -44,15 +44,21 @@ export default function Home() {
 
             <div
               style={{
+                position: "relative",
                 aspectRatio: "4 / 5",
-                background: "var(--bg-sunken)",
+                background: "#ffffff",
                 border: "1px solid var(--line)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                overflow: "hidden",
               }}
             >
-              <Emblem size={180} />
+              <Image
+                src="/products/golf-tee/sand.jpg"
+                alt="The Okuhle golf tee in sand"
+                fill
+                priority
+                sizes="(max-width: 700px) 100vw, 45vw"
+                style={{ objectFit: "contain" }}
+              />
             </div>
           </div>
         </Container>
@@ -167,21 +173,31 @@ export default function Home() {
             gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
           }}
         >
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                aspectRatio: "1 / 1",
-                background: "var(--bg-raised)",
-                border: "1px solid var(--line)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Emblem size={54} />
-            </div>
-          ))}
+          {lookbook()
+            .filter((_, i) => i % 3 === 0)
+            .slice(0, 4)
+            .map((shot) => (
+              <Link
+                key={shot.src}
+                href={shot.href}
+                style={{
+                  position: "relative",
+                  aspectRatio: "1 / 1",
+                  background: "#ffffff",
+                  border: "1px solid var(--line)",
+                  overflow: "hidden",
+                  display: "block",
+                }}
+              >
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  fill
+                  sizes="(max-width: 700px) 50vw, 25vw"
+                  style={{ objectFit: "cover" }}
+                />
+              </Link>
+            ))}
         </div>
         <div style={{ marginTop: "2rem" }}>
           <Link className="btn btn-ghost" href="/gallery">

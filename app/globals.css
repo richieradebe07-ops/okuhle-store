@@ -179,6 +179,12 @@ a:focus-visible {
   color: var(--accent-fg);
 }
 
+/* Emblem artwork is black; flip it to cream on dark backgrounds. */
+[data-theme="dark"] .emblem,
+.emblem-invert {
+  filter: invert(1);
+}
+
 /* Entrance animation used by <Reveal> */
 .reveal {
   opacity: 0;

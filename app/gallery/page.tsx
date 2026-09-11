@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { PageHeader, Container } from "@/components/Section";
-import { Emblem } from "@/components/Logo";
+import { lookbook } from "@/lib/products";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description: "OKUHLE worn out in KwaZulu-Natal. Tag us and get featured.",
+  description: "The OKUHLE range, colourway by colourway. Tag us and get featured.",
 };
 
 export default function GalleryPage() {
+  const shots = lookbook();
+
   return (
     <>
       <PageHeader
-        eyebrow="The community"
-        title="Worn in the wild"
-        lead="Follow along and see OKUHLE out in KwaZulu-Natal — tag us and get featured."
+        eyebrow="The lookbook"
+        title="Every colourway"
+        lead="The full range, colour by colour. Wearing yours? Tag us and we'll put you up here."
       />
 
       <Container style={{ padding: "clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 3rem)" }}>
@@ -25,29 +29,35 @@ export default function GalleryPage() {
             gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
           }}
         >
-          {/* Placeholder tiles — swap for real community photography. */}
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
+          {shots.map((shot) => (
+            <Link
+              key={shot.src}
+              href={shot.href}
               style={{
+                position: "relative",
                 aspectRatio: "1 / 1",
-                background: i % 2 ? "var(--bg-sunken)" : "var(--bg-raised)",
+                background: "#ffffff",
                 border: "1px solid var(--line)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                overflow: "hidden",
+                display: "block",
               }}
             >
-              <Emblem size={64} />
-            </div>
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                fill
+                sizes="(max-width: 700px) 50vw, 25vw"
+                style={{ objectFit: "cover" }}
+              />
+            </Link>
           ))}
         </div>
 
         <div className="card" style={{ padding: "2rem", marginTop: "2.5rem" }}>
           <h2 style={{ margin: 0, fontSize: "1.6rem" }}>Get featured</h2>
           <p style={{ color: "var(--fg-muted)", margin: "0.75rem 0 1.5rem", maxWidth: "34rem" }}>
-            Wearing yours? Tag {site.socials[0].handle} on Instagram or {site.socials[1].handle} on
-            TikTok and we will put you up here.
+            Tag {site.socials[0].handle} on Instagram or {site.socials[1].handle} on TikTok and your
+            shot goes up here alongside the range.
           </p>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             {site.socials.map((s) => (

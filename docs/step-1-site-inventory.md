@@ -105,6 +105,22 @@ In order: **HOME, ABOUT, SHOP, GALLERY, FAQ, ORDER**
 
 ## Product catalog (confirmed from product cards — structured version in `data/products.json`)
 
+> **SUPERSEDED.** The owner has since supplied product listings and photography. Confirmed values:
+>
+> | Product | Price | Was | Colourways supplied |
+> |---|---|---|---|
+> | Golf T-shirts | R270 | R300 | White, Grey, Sand, Pink, Royal Blue, Orange (6) |
+> | T-shirts | R210 | **R240** | Black, Navy, Olive, Purple, Red, Cream (6) |
+> | Baggy T-shirts | R270 | R280 | White, Grey, Sand, Yellow, Mustard, Orange, Red, Green, Sky, Royal Blue (10) |
+>
+> - The "SAVE R30 vs R230→R210" discrepancy is resolved: the real was-price is **R240**, so the
+>   badge was right and the R230 read from the video was wrong.
+> - The old site listed both a "T-Shirt" and a "Signature Tee" at R210. The supplied photography
+>   shows one tee product, so they are **merged into a single "T-Shirt"** — flag if that's wrong.
+> - Photography now lives in `public/products/<product>/<colour>.jpg`; the real emblem was
+>   extracted to `public/brand/emblem.png`.
+> - Still awaiting photography and confirmed was-prices for **Sweater** (R360) and **Hoodie** (R400).
+
 | Product | Price | Was | Description (verbatim from card) | Colours seen | Sizes |
 |---|---|---|---|---|---|
 | Golf T-Shirt | R270 | R300 | "High quality golf t-shirt. Buy 3 golf t-shirts and more at a special price and save." | White, Grey, Tan/Gold, Pink, Blue, Sky Blue, Orange/Red | S, M, L, XL, XXL |

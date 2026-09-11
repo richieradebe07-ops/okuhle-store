@@ -1,21 +1,31 @@
+import Image from "next/image";
 import { site } from "@/lib/site";
 
-export function Emblem({ size = 40 }: { size?: number }) {
+/**
+ * The OKUHLE emblem. The artwork is black, so it needs flipping on dark
+ * backgrounds. "auto" follows the page theme; pass "dark"/"light" when the
+ * emblem sits on a fixed colour (a garment swatch) that the theme doesn't move.
+ */
+export function Emblem({
+  size = 40,
+  tone = "auto",
+}: {
+  size?: number;
+  tone?: "auto" | "dark" | "light";
+}) {
+  const className =
+    tone === "auto" ? "emblem" : tone === "light" ? "emblem-invert" : undefined;
+
   return (
-    <svg
+    <Image
+      className={className}
+      src="/brand/emblem.png"
+      alt="OKUHLE emblem"
       width={size}
       height={size}
-      viewBox="0 0 48 48"
-      role="img"
-      aria-label="OKUHLE emblem"
-      style={{ flexShrink: 0 }}
-    >
-      <circle cx="24" cy="24" r="22" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
-      <circle cx="24" cy="24" r="18" fill="none" stroke="var(--accent)" strokeWidth="0.75" opacity="0.6" />
-      {/* stylised sail / crest */}
-      <path d="M24 12 L33 30 L24 25 L15 30 Z" fill="var(--accent)" />
-      <path d="M24 12 L24 25" stroke="var(--bg)" strokeWidth="1" />
-    </svg>
+      priority={size > 80}
+      style={{ flexShrink: 0, width: size, height: size }}
+    />
   );
 }
 

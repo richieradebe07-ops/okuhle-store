@@ -1,11 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Product, memberPrice, savings } from "@/lib/products";
 import { formatRand, site, whatsappLink } from "@/lib/site";
 import { useWishlist } from "./WishlistProvider";
 import { Emblem } from "./Logo";
+
+/** Relative luminance, to decide whether artwork on this colour should be black or white. */
+function isLight(hex: string) {
+  const v = hex.replace("#", "");
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(v.slice(i, i + 2), 16) / 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.55;
+}
 
 export function ProductCard({ product }: { product: Product }) {
   const [color, setColor] = useState(product.colors[0]);
@@ -28,15 +36,36 @@ Is this available?`;
         style={{
           position: "relative",
           aspectRatio: "1 / 1",
-          background: color.hex,
+          background: color.image ? "#ffffff" : color.hex,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           transition: "background 0.35s ease",
+          overflow: "hidden",
         }}
       >
-        {/* Placeholder visual until real product photography is loaded in */}
-        <Emblem size={92} />
+        {color.image ? (
+          <Image
+            src={color.image}
+            alt={`${product.name} in ${color.name}`}
+            fill
+            sizes="(max-width: 700px) 100vw, 33vw"
+            style={{ objectFit: "cover" }}
+          />
+        ) : (
+          /* Fabric swatch until this colourway is photographed. Deliberately no
+             emblem here — a logo stamped on flat colour reads as a fake product. */
+          <span
+            style={{
+              fontSize: "0.62rem",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: isLight(color.hex) ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.6)",
+            }}
+          >
+            {color.name}
+          </span>
+        )}
 
         {saved > 0 && (
           <span
@@ -44,6 +73,7 @@ Is this available?`;
               position: "absolute",
               top: "0.75rem",
               left: "0.75rem",
+              zIndex: 1,
               background: "var(--bg)",
               color: "var(--accent)",
               fontSize: "0.62rem",
@@ -64,6 +94,7 @@ Is this available?`;
             position: "absolute",
             top: "0.75rem",
             right: "0.75rem",
+            zIndex: 1,
             width: "2.2rem",
             height: "2.2rem",
             borderRadius: "50%",

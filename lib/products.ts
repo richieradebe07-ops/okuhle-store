@@ -1,6 +1,8 @@
 export type ProductColor = {
   name: string;
   hex: string;
+  /** Product shot for this colourway. Falls back to a swatch tile when absent. */
+  image?: string;
 };
 
 export type Product = {
@@ -56,13 +58,12 @@ export const products: Product[] = [
     material: "Pique cotton blend, breathable and shape-holding.",
     care: "Cold machine wash with like colours. Hang dry in shade. Warm iron, never directly on the emblem.",
     colors: [
-      { name: "White", hex: "#f3f1ec" },
-      { name: "Grey", hex: "#9a9a9a" },
-      { name: "Sand", hex: "#d8c9a3" },
-      { name: "Pink", hex: "#e59fb5" },
-      { name: "Royal Blue", hex: "#2a4fc4" },
-      { name: "Sky", hex: "#57b0d8" },
-      { name: "Burnt Orange", hex: "#c5451f" },
+      { name: "White", hex: "#e7e7e7", image: "/products/golf-tee/white.jpg" },
+      { name: "Grey", hex: "#9e9da5", image: "/products/golf-tee/grey.jpg" },
+      { name: "Sand", hex: "#bdad8c", image: "/products/golf-tee/sand.jpg" },
+      { name: "Pink", hex: "#e77e99", image: "/products/golf-tee/pink.jpg" },
+      { name: "Royal Blue", hex: "#334cc5", image: "/products/golf-tee/blue.jpg" },
+      { name: "Orange", hex: "#dc4323", image: "/products/golf-tee/orange.jpg" },
     ],
     sizes: SIZES,
     memberDiscountPercent: 15,
@@ -71,24 +72,24 @@ export const products: Product[] = [
     active: true,
   },
   {
-    id: "classic-tee",
-    name: "Classic Tee",
+    id: "t-shirt",
+    name: "T-Shirt",
     category: "t-shirts",
     price: 210,
-    compareAtPrice: 230,
-    tagline: "The everyday one.",
+    compareAtPrice: 240,
+    tagline: "The emblem, full size.",
     description:
-      "Our everyday tee, carrying the Okuhle emblem at the chest. Mid-weight cotton that holds its shape wash after wash.",
+      "Our everyday tee, printed with the full-size Okuhle emblem front and centre. Mid-weight cotton that holds its shape wash after wash.",
     fit: "Regular fit, true to size.",
     material: "Mid-weight combed cotton.",
-    care: "Cold machine wash inside out. Hang dry in shade. Warm iron, never directly on the emblem.",
+    care: "Cold machine wash inside out. Hang dry in shade. Do not iron over the print.",
     colors: [
-      { name: "Black", hex: "#111111" },
-      { name: "Royal Blue", hex: "#2a4fc4" },
-      { name: "Navy", hex: "#1b2445" },
-      { name: "Red", hex: "#b8222c" },
-      { name: "Bronze", hex: "#b07a35" },
-      { name: "Yellow", hex: "#e5d21f" },
+      { name: "Black", hex: "#111111", image: "/products/t-shirt/black.jpg" },
+      { name: "Navy", hex: "#262f3e", image: "/products/t-shirt/navy.jpg" },
+      { name: "Olive", hex: "#2a2d20", image: "/products/t-shirt/olive.jpg" },
+      { name: "Purple", hex: "#2e1247", image: "/products/t-shirt/purple.jpg" },
+      { name: "Red", hex: "#a22927", image: "/products/t-shirt/red.jpg" },
+      { name: "Cream", hex: "#cfc19f", image: "/products/t-shirt/cream.jpg" },
     ],
     sizes: SIZES,
     memberDiscountPercent: 20,
@@ -97,42 +98,28 @@ export const products: Product[] = [
     active: true,
   },
   {
-    id: "signature-tee",
-    name: "Signature Tee",
-    category: "t-shirts",
-    price: 210,
-    tagline: "The emblem, full size.",
-    description:
-      "Our flagship tee, printed with the full-size Okuhle emblem front and centre. Same price as the classic tee — the difference is how loudly you wear it.",
-    fit: "Regular fit, true to size.",
-    material: "Mid-weight combed cotton.",
-    care: "Cold machine wash inside out. Hang dry in shade. Do not iron over the print.",
-    colors: [
-      { name: "Cream", hex: "#e8dcc0" },
-      { name: "Olive", hex: "#3f4a2a" },
-      { name: "Plum", hex: "#3c2a4d" },
-      { name: "Red", hex: "#b8222c" },
-    ],
-    sizes: SIZES,
-    memberDiscountPercent: 20,
-    images: [],
-    active: true,
-  },
-  {
     id: "baggy-tee",
     name: "Baggy Tee",
     category: "baggy-tees",
     price: 270,
-    tagline: "Wear and own your beauty.",
+    compareAtPrice: 280,
+    tagline: "Wear & own your beauty.",
     description:
-      "A dropped-shoulder, wide-body tee for when the fit should do the talking. Heavier cotton, longer line, no cling.",
+      "A dropped-shoulder, wide-body tee for when the fit should do the talking. Emblem at the chest, “Wear & own your beauty” at the hem.",
     fit: "Oversized by design. Take your usual size for the intended drape.",
     material: "Heavy-weight cotton, garment washed.",
     care: "Cold machine wash inside out. Hang dry in shade. Warm iron on reverse.",
     colors: [
-      { name: "Grey", hex: "#9a9a9a" },
-      { name: "Black", hex: "#111111" },
-      { name: "Cream", hex: "#e8dcc0" },
+      { name: "White", hex: "#eff1f0", image: "/products/baggy-tee/white.jpg" },
+      { name: "Grey", hex: "#c6c8c7", image: "/products/baggy-tee/grey.jpg" },
+      { name: "Sand", hex: "#cfc19f", image: "/products/baggy-tee/sand.jpg" },
+      { name: "Yellow", hex: "#ebf10f", image: "/products/baggy-tee/yellow.jpg" },
+      { name: "Mustard", hex: "#c38e1d", image: "/products/baggy-tee/mustard.jpg" },
+      { name: "Orange", hex: "#e3531c", image: "/products/baggy-tee/orange.jpg" },
+      { name: "Red", hex: "#ed0014", image: "/products/baggy-tee/red.jpg" },
+      { name: "Green", hex: "#58be5a", image: "/products/baggy-tee/green.jpg" },
+      { name: "Sky", hex: "#017db8", image: "/products/baggy-tee/sky.jpg" },
+      { name: "Royal Blue", hex: "#0400ed", image: "/products/baggy-tee/blue.jpg" },
     ],
     sizes: SIZES,
     memberDiscountPercent: 15,
@@ -196,6 +183,15 @@ export const products: Product[] = [
 
 export function getProduct(id: string) {
   return products.find((p) => p.id === id);
+}
+
+/** Every photographed colourway, for lookbook grids. */
+export function lookbook() {
+  return products.flatMap((p) =>
+    p.colors
+      .filter((c) => c.image)
+      .map((c) => ({ src: c.image as string, alt: `${p.name} in ${c.name}`, href: `/shop/${p.id}` }))
+  );
 }
 
 export function memberPrice(product: Product) {

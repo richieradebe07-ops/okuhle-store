@@ -1,0 +1,203 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { Product, memberPrice, savings } from "@/lib/products";
+import { formatRand, site, whatsappLink } from "@/lib/site";
+import { useWishlist } from "./WishlistProvider";
+import { Emblem } from "./Logo";
+
+export function ProductCard({ product }: { product: Product }) {
+  const [color, setColor] = useState(product.colors[0]);
+  const [size, setSize] = useState<string | null>(null);
+  const { has, toggle } = useWishlist();
+  const saved = savings(product);
+
+  const orderMessage = `Hi ${site.name}! I'd like to order:
+
+• ${product.name}
+• Colour: ${color.name}
+• Size: ${size ?? "(please advise)"}
+• Price: ${formatRand(product.price)}
+
+Is this available?`;
+
+  return (
+    <article className="card" style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          position: "relative",
+          aspectRatio: "1 / 1",
+          background: color.hex,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "background 0.35s ease",
+        }}
+      >
+        {/* Placeholder visual until real product photography is loaded in */}
+        <Emblem size={92} />
+
+        {saved > 0 && (
+          <span
+            style={{
+              position: "absolute",
+              top: "0.75rem",
+              left: "0.75rem",
+              background: "var(--bg)",
+              color: "var(--accent)",
+              fontSize: "0.62rem",
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              padding: "0.3rem 0.6rem",
+              border: "1px solid var(--accent)",
+            }}
+          >
+            Save {formatRand(saved)}
+          </span>
+        )}
+
+        <button
+          onClick={() => toggle(product.id)}
+          aria-label={has(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+          style={{
+            position: "absolute",
+            top: "0.75rem",
+            right: "0.75rem",
+            width: "2.2rem",
+            height: "2.2rem",
+            borderRadius: "50%",
+            border: "none",
+            background: "var(--bg)",
+            color: has(product.id) ? "var(--accent)" : "var(--fg-muted)",
+            cursor: "pointer",
+            fontSize: "0.95rem",
+          }}
+        >
+          ♥
+        </button>
+      </div>
+
+      <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+        <div>
+          <h3 style={{ fontSize: "1.35rem", margin: 0 }}>
+            <Link href={`/shop/${product.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+              {product.name}
+            </Link>
+          </h3>
+          <p style={{ color: "var(--fg-muted)", fontSize: "0.86rem", margin: "0.35rem 0 0" }}>
+            {product.tagline ?? product.description}
+          </p>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem" }}>
+          <span className="display" style={{ fontSize: "1.5rem", color: "var(--accent)" }}>
+            {formatRand(product.price)}
+          </span>
+          {product.compareAtPrice && (
+            <span
+              style={{
+                color: "var(--fg-muted)",
+                textDecoration: "line-through",
+                fontSize: "0.9rem",
+              }}
+            >
+              {formatRand(product.compareAtPrice)}
+            </span>
+          )}
+        </div>
+
+        <p style={{ margin: 0, fontSize: "0.78rem", color: "var(--fg-muted)" }}>
+          Okuhle+ members pay{" "}
+          <strong style={{ color: "var(--accent)" }}>{formatRand(memberPrice(product))}</strong>{" "}
+          <Link href="/pricing" style={{ color: "var(--fg-muted)" }}>
+            (−{product.memberDiscountPercent}%)
+          </Link>
+        </p>
+
+        <div>
+          <FieldLabel>
+            Colour: <span style={{ color: "var(--accent)" }}>{color.name}</span>
+          </FieldLabel>
+          <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap" }}>
+            {product.colors.map((c) => (
+              <button
+                key={c.name}
+                onClick={() => setColor(c)}
+                aria-label={c.name}
+                aria-pressed={c.name === color.name}
+                style={{
+                  width: "1.6rem",
+                  height: "1.6rem",
+                  borderRadius: "50%",
+                  background: c.hex,
+                  cursor: "pointer",
+                  border:
+                    c.name === color.name
+                      ? "2px solid var(--accent)"
+                      : "1px solid var(--line)",
+                  outlineOffset: "2px",
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <FieldLabel>
+            Size:{" "}
+            <span style={{ color: size ? "var(--accent)" : "var(--fg-muted)" }}>
+              {size ?? "Select a size"}
+            </span>
+          </FieldLabel>
+          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+            {product.sizes.map((s) => (
+              <button
+                key={s}
+                onClick={() => setSize(s)}
+                aria-pressed={s === size}
+                style={{
+                  minWidth: "2.6rem",
+                  padding: "0.45rem 0.6rem",
+                  fontSize: "0.78rem",
+                  cursor: "pointer",
+                  background: s === size ? "var(--accent)" : "transparent",
+                  color: s === size ? "var(--accent-fg)" : "var(--fg)",
+                  border: `1px solid ${s === size ? "var(--accent)" : "var(--line)"}`,
+                }}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <a
+          className="btn"
+          href={whatsappLink(orderMessage)}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ width: "100%" }}
+        >
+          Order Now
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function FieldLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      style={{
+        margin: "0 0 0.5rem",
+        fontSize: "0.68rem",
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
+        color: "var(--fg-muted)",
+      }}
+    >
+      {children}
+    </p>
+  );
+}

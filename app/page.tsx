@@ -4,7 +4,8 @@ import { Container, Section } from "@/components/Section";
 import { ProductCard } from "@/components/ProductCard";
 import { EmailSignup } from "@/components/EmailSignup";
 import { products, lookbook } from "@/lib/products";
-import { site } from "@/lib/site";
+import { formatRand, site } from "@/lib/site";
+import { layBy, loyalty } from "@/lib/loyalty";
 
 export default function Home() {
   const featured = products.slice(0, 3);
@@ -36,8 +37,8 @@ export default function Home() {
                 <Link className="btn" href="/shop">
                   Shop the drop
                 </Link>
-                <Link className="btn btn-ghost" href="/pricing">
-                  Join Okuhle+
+                <Link className="btn btn-ghost" href="/loyalty">
+                  Free rewards
                 </Link>
               </div>
             </div>
@@ -129,8 +130,12 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Okuhle+ teaser */}
-      <Section eyebrow="Okuhle+" title="Two ways to wear Okuhle">
+      {/* Rewards + lay-by */}
+      <Section
+        eyebrow="Rewards"
+        title="Free rewards, no subscription"
+        lead="No monthly fee, nothing to cancel. Make an account and you earn on every order."
+      >
         <div
           style={{
             display: "grid",
@@ -139,10 +144,16 @@ export default function Home() {
           }}
         >
           {[
-            { t: "15–25% off", d: "Member pricing on every piece, applied automatically." },
+            {
+              t: `${formatRand(loyalty.redeemValueRand)} back`,
+              d: `Every ${formatRand(loyalty.randPerPoint)} spent earns a point. ${loyalty.redeemPoints} points is ${formatRand(loyalty.redeemValueRand)} off.`,
+            },
             { t: "48 hours early", d: "Shop new drops before they go public." },
-            { t: "Rewards points", d: "R100 spent earns a point. 10 points is R10 off." },
-            { t: "Birthday bonus", d: "An extra 15% off during your birthday month." },
+            { t: "Birthday month", d: "15% off one order during your birthday month." },
+            {
+              t: `Pay over ${layBy.months} months`,
+              d: "Lay-by on every piece. No interest, no admin fee.",
+            },
           ].map((b) => (
             <div key={b.t} className="card" style={{ padding: "1.5rem" }}>
               <h3 style={{ margin: 0, fontSize: "1.4rem", color: "var(--accent)" }}>{b.t}</h3>
@@ -153,8 +164,8 @@ export default function Home() {
           ))}
         </div>
         <div style={{ marginTop: "2.5rem" }}>
-          <Link className="btn" href="/pricing">
-            See membership
+          <Link className="btn" href="/loyalty">
+            How rewards work
           </Link>
         </div>
       </Section>

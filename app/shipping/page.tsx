@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { PageHeader, Section } from "@/components/Section";
-import { site } from "@/lib/site";
+import { formatRand, site } from "@/lib/site";
+import { products } from "@/lib/products";
+import { layByMonthly } from "@/lib/loyalty";
 
 export const metadata: Metadata = {
   title: "Shipping & Lay-By",
@@ -52,11 +54,33 @@ export default function ShippingPage() {
         </p>
       </Section>
 
-      <Section title="Lay-by over 2–3 months">
+      <Section id="lay-by" title="Lay-by over 3 months">
         <div style={{ maxWidth: "38rem", color: "var(--fg-muted)", display: "grid", gap: "1rem" }}>
           <p style={{ margin: 0 }}>
-            Lay-by lets you pay a piece off over two to three months. No interest, no admin fee.
+            Lay-by lets you pay a piece off over three months. No interest, no admin fee.
           </p>
+          <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: "0.5rem" }}>
+            {products.map((p) => (
+              <li
+                key={p.id}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  borderBottom: "1px solid var(--line)",
+                  paddingBottom: "0.5rem",
+                }}
+              >
+                <span style={{ color: "var(--fg)" }}>{p.name}</span>
+                <span>
+                  {formatRand(p.price)} —{" "}
+                  <strong style={{ color: "var(--accent)" }}>
+                    {formatRand(layByMonthly(p.price))}/month
+                  </strong>
+                </span>
+              </li>
+            ))}
+          </ul>
           <ol style={{ margin: 0, paddingLeft: "1.2rem", display: "grid", gap: "0.6rem" }}>
             <li>Message us with the piece, colour and size you want.</li>
             <li>Pay a deposit — this is what starts production.</li>

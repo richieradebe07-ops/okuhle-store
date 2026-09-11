@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader, Container } from "@/components/Section";
 import { LegalBody } from "@/components/LegalBody";
 import { site } from "@/lib/site";
-import { membership } from "@/lib/membership";
+import { loyalty } from "@/lib/loyalty";
 import { formatRand } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Terms & Conditions" };
@@ -26,7 +26,7 @@ export default function TermsPage() {
           <h2>Pricing</h2>
           <p>
             All prices are in South African Rand and include VAT where applicable. Bulk pricing and
-            Okuhle+ member pricing are applied at the time of order.
+            any rewards redemption are applied at the time of order.
           </p>
 
           <h2>Production and delivery times</h2>
@@ -50,12 +50,14 @@ export default function TermsPage() {
             Size exchanges are possible within 7 days on unworn, unwashed items with tags attached.
           </p>
 
-          <h2>Okuhle+ membership</h2>
+          <h2>Rewards</h2>
           <p>
-            Okuhle+ costs {formatRand(membership.monthlyPrice)} per month, with the first month at{" "}
-            {formatRand(membership.firstMonthPrice)}. It renews monthly until you cancel. Cancelling
-            stops future billing; it does not refund months already paid. Benefits run until the end
-            of the paid period.
+            Rewards are free with an account — there is no subscription or fee. You earn 1 point per{" "}
+            {formatRand(loyalty.randPerPoint)} spent, rounded down, and {loyalty.redeemPoints} points
+            redeems {formatRand(loyalty.redeemValueRand)} off a future order. Points are added once
+            payment clears, carry no cash value, and lapse after {loyalty.expiryMonths} months with no
+            activity on your account. We may adjust the earn or redemption rate for future orders,
+            but never retroactively on points you have already earned.
           </p>
 
           <h2>Intellectual property</h2>

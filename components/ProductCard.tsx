@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Product, memberPrice, savings } from "@/lib/products";
+import { Product, savings } from "@/lib/products";
 import { formatRand, site, whatsappLink } from "@/lib/site";
+import { layBy, layByMonthly, pointsFor } from "@/lib/loyalty";
 import { useWishlist } from "./WishlistProvider";
 import { Emblem } from "./Logo";
 
@@ -139,10 +140,13 @@ Is this available?`;
         </div>
 
         <p style={{ margin: 0, fontSize: "0.78rem", color: "var(--fg-muted)" }}>
-          Okuhle+ members pay{" "}
-          <strong style={{ color: "var(--accent)" }}>{formatRand(memberPrice(product))}</strong>{" "}
-          <Link href="/pricing" style={{ color: "var(--fg-muted)" }}>
-            (−{product.memberDiscountPercent}%)
+          or{" "}
+          <strong style={{ color: "var(--accent)" }}>
+            {formatRand(layByMonthly(product.price))}/month
+          </strong>{" "}
+          over {layBy.months} months —{" "}
+          <Link href="/shipping#lay-by" style={{ color: "var(--fg-muted)" }}>
+            how lay-by works
           </Link>
         </p>
 
@@ -212,6 +216,20 @@ Is this available?`;
         >
           Order Now
         </a>
+
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.72rem",
+            color: "var(--fg-muted)",
+            textAlign: "center",
+          }}
+        >
+          Earns {pointsFor(product.price)} points ·{" "}
+          <Link href="/loyalty" style={{ color: "var(--fg-muted)" }}>
+            free rewards
+          </Link>
+        </p>
       </div>
     </article>
   );

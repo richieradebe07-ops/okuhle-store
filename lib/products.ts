@@ -19,8 +19,6 @@ export type Product = {
   care: string;
   colors: ProductColor[];
   sizes: string[];
-  /** Okuhle+ member discount, as a percentage off the regular price. */
-  memberDiscountPercent: number;
   bulkOffer?: string;
   images: string[];
   active: boolean;
@@ -66,7 +64,6 @@ export const products: Product[] = [
       { name: "Orange", hex: "#dc4323", image: "/products/golf-tee/orange.jpg" },
     ],
     sizes: SIZES,
-    memberDiscountPercent: 15,
     bulkOffer: "Buy 3 or more golf tees and the price drops again — ask on WhatsApp.",
     images: [],
     active: true,
@@ -92,7 +89,6 @@ export const products: Product[] = [
       { name: "Cream", hex: "#cfc19f", image: "/products/t-shirt/cream.jpg" },
     ],
     sizes: SIZES,
-    memberDiscountPercent: 20,
     bulkOffer: "Buy 3 or more tees and the price drops again — ask on WhatsApp.",
     images: [],
     active: true,
@@ -122,7 +118,6 @@ export const products: Product[] = [
       { name: "Royal Blue", hex: "#0400ed", image: "/products/baggy-tee/blue.jpg" },
     ],
     sizes: SIZES,
-    memberDiscountPercent: 15,
     bulkOffer: "Buy 3 or more baggy tees and the price drops again — ask on WhatsApp.",
     images: [],
     active: true,
@@ -151,7 +146,6 @@ export const products: Product[] = [
       { name: "Pink", hex: "#de4b9b", image: "/products/sweater/pink.jpg" },
     ],
     sizes: SIZES,
-    memberDiscountPercent: 20,
     bulkOffer: "Buy 2 or more sweaters and the price drops again — ask on WhatsApp.",
     images: [],
     active: true,
@@ -179,7 +173,6 @@ export const products: Product[] = [
       { name: "Pink", hex: "#d20075", image: "/products/hoodie/pink.jpg" },
     ],
     sizes: SIZES,
-    memberDiscountPercent: 25,
     bulkOffer: "Buy 2 or more hoodies and the price drops again — ask on WhatsApp.",
     images: [],
     active: true,
@@ -197,10 +190,6 @@ export function lookbook() {
       .filter((c) => c.image)
       .map((c) => ({ src: c.image as string, alt: `${p.name} in ${c.name}`, href: `/shop/${p.id}` }))
   );
-}
-
-export function memberPrice(product: Product) {
-  return Math.round(product.price * (1 - product.memberDiscountPercent / 100));
 }
 
 export function savings(product: Product) {

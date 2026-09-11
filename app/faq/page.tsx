@@ -7,7 +7,7 @@ import { site, whatsappLink } from "@/lib/site";
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Sizing, ordering, lay-by, shipping, returns and Okuhle+ membership — everything you need before you order.",
+    "Sizing, ordering, lay-by, shipping, returns and rewards — everything you need before you order.",
 };
 
 export default function FaqPage() {

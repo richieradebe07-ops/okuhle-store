@@ -32,8 +32,8 @@ export default function CookiesPage() {
               They are not sent to us.
             </li>
             <li>
-              <strong>Sign-in session</strong> — if you have an Okuhle+ account, so you stay signed
-              in and see member pricing.
+              <strong>Sign-in session</strong> — if you have an account, so you stay signed in and
+              your rewards balance follows you.
             </li>
             <li>
               <strong>Privacy-friendly analytics</strong> — aggregate page-view counts with no

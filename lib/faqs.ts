@@ -91,27 +91,23 @@ export const faqs: FaqSection[] = [
     ],
   },
   {
-    title: "Okuhle+ membership",
+    title: "Rewards",
     items: [
       {
-        q: "What is Okuhle+?",
-        a: "Okuhle+ is our monthly membership, R150 a month. Members get 15–25% off every piece, first access to new drops 48 hours before everyone else, rewards points on every order, a birthday month bonus, and access to the members' community.",
+        q: "Do you have a membership or subscription?",
+        a: "No, and deliberately so. We worked out that a monthly fee only pays for itself if you buy several pieces every month, which almost nobody does — it would have cost most people more than it saved them. The rewards are free with an account instead.",
       },
       {
-        q: "How much can I actually save?",
-        a: "It depends what you buy. A hoodie at 25% off saves you R100 in a single order — more than half the month's membership. If you buy a piece or two a month, the membership pays for itself and then some.",
+        q: "How do points work?",
+        a: "Every R100 you spend earns 1 point, rounded down. 10 points takes R100 off a future order. Points are added automatically when your payment clears — there is no code to enter.",
       },
       {
-        q: "How do the rewards points work?",
-        a: "Every R100 you spend earns 1 point, and 10 points takes R10 off a future order. Points sit on your account until you use them and do not expire while your membership is active.",
+        q: "Do points expire?",
+        a: "After 12 months with no activity on your account, yes. We would rather say that upfront than bury it in the terms.",
       },
       {
-        q: "Can I cancel whenever I want?",
-        a: "Yes. There is no lock-in and no cancellation fee. Cancel from your account and you keep your member benefits until the end of the month you have already paid for.",
-      },
-      {
-        q: "Do I need to enter a discount code?",
-        a: "No. Sign in and member pricing shows on every product page and carries through to checkout automatically.",
+        q: "What else do I get with an account?",
+        a: "Early access to new drops 48 hours before they go public, 15% off one order during your birthday month, and first notification when a sold-out size is restocked.",
       },
     ],
   },

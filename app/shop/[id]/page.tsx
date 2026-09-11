@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Section";
 import { ProductCard } from "@/components/ProductCard";
-import { getProduct, products, memberPrice } from "@/lib/products";
-import { formatRand } from "@/lib/site";
+import { getProduct, products } from "@/lib/products";
+import { formatRand, site, whatsappLink } from "@/lib/site";
+import { layBy, layByMonthly, loyalty, pointsFor } from "@/lib/loyalty";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
@@ -66,16 +67,38 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             <Detail term="Care" value={product.care} />
             {product.bulkOffer && <Detail term="Bulk pricing" value={product.bulkOffer} />}
             <Detail
-              term="Okuhle+ price"
-              value={`${formatRand(memberPrice(product))} for members — ${product.memberDiscountPercent}% off, applied automatically.`}
+              term="Lay-by"
+              value={`${formatRand(layByMonthly(product.price))} a month over ${layBy.months} months. ${layBy.note}`}
+            />
+            <Detail
+              term="Rewards"
+              value={`Earns ${pointsFor(product.price)} points. ${loyalty.redeemPoints} points is ${formatRand(loyalty.redeemValueRand)} off a future order — free, no subscription.`}
             />
           </dl>
 
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "2rem" }}>
-            <Link className="btn btn-ghost" href="/pricing">
-              Join Okuhle+ and save
+          {/* Sizing help sits next to the decision, not buried in the FAQ. */}
+          <div className="card" style={{ padding: "1.25rem", marginTop: "2rem" }}>
+            <p style={{ margin: 0, fontWeight: 500 }}>Not sure of your size?</p>
+            <p style={{ margin: "0.4rem 0 1rem", color: "var(--fg-muted)", fontSize: "0.9rem" }}>
+              {product.fit} Message us before you order and we&apos;ll talk it through.
+            </p>
+            <a
+              className="btn btn-ghost"
+              href={whatsappLink(
+                `Hi ${site.name}! I need help with sizing for the ${product.name}.`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ask about sizing
+            </a>
+          </div>
+
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
+            <Link className="btn btn-ghost" href="/loyalty">
+              Free rewards
             </Link>
-            <Link className="btn btn-ghost" href="/shipping">
+            <Link className="btn btn-ghost" href="/shipping#lay-by">
               Shipping &amp; lay-by
             </Link>
           </div>

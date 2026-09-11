@@ -74,8 +74,8 @@ export default function AboutPage() {
           <Link className="btn" href="/shop">
             Shop the range
           </Link>
-          <Link className="btn btn-ghost" href="/pricing">
-            Join Okuhle+
+          <Link className="btn btn-ghost" href="/loyalty">
+            Free rewards
           </Link>
         </div>
       </Section>

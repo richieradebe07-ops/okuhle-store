@@ -15,13 +15,13 @@ export default function PrivacyPage() {
           <p>
             When you order, we collect your name, contact number, delivery address and the details
             of what you ordered. If you join our mailing list we store your email address. If you
-            become an Okuhle+ member we also store your membership status and billing reference.
+            have an account we also store your rewards points balance.
           </p>
 
           <h2>What we use it for</h2>
           <p>
             To make and deliver your order, to answer your messages, to send you drop announcements
-            if you asked for them, and to run the Okuhle+ membership. Nothing else.
+            if you asked for them, and to run the rewards programme. Nothing else.
           </p>
 
           <h2>What we do not do</h2>

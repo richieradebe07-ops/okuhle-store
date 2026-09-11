@@ -1,0 +1,103 @@
+{
+  "_comment": "Structured product data extracted in Step 1 from a recording of the live site. Fields marked confirmed=false need owner review before use. Prices in ZAR (Rand), no decimals.",
+  "products": [
+    {
+      "id": "golf-tee",
+      "name": "Golf T-Shirt",
+      "category": "golf-tees",
+      "price": 270,
+      "compareAtPrice": 300,
+      "description": "High quality golf t-shirt. Buy 3 golf t-shirts and more at a special price and save.",
+      "colors": ["White", "Grey", "Tan/Gold", "Pink", "Blue", "Sky Blue", "Orange/Red"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "careInstructions": null,
+      "images": [],
+      "active": true,
+      "confirmed": false,
+      "confirmNotes": "Full colour list may be incomplete; care instructions not shown in source video."
+    },
+    {
+      "id": "t-shirt",
+      "name": "T-Shirt",
+      "category": "t-shirts",
+      "price": 210,
+      "compareAtPrice": 230,
+      "description": "Medium quality clothing. Buy 3 t-shirts and more at a special price and save.",
+      "colors": ["Black", "Blue", "Navy", "Red", "Gold/Brown", "Yellow"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "careInstructions": null,
+      "images": [],
+      "active": true,
+      "confirmed": false,
+      "confirmNotes": "Card shows a 'SAVE R30' badge but R230 -> R210 is only R20 savings. Confirm the real compareAtPrice."
+    },
+    {
+      "id": "signature-tee",
+      "name": "Signature Tee",
+      "category": "t-shirts",
+      "price": 210,
+      "compareAtPrice": null,
+      "description": "Our flagship tee, printed with the full-size Okuhle emblem front and centre. Price matches our classic tee — confirm colour and size on order.",
+      "colors": ["Cream", "Olive", "Purple/Navy", "Red"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "careInstructions": null,
+      "images": [],
+      "active": true,
+      "confirmed": false,
+      "confirmNotes": "Full colour list may be incomplete; no compareAtPrice seen in source video."
+    },
+    {
+      "id": "baggy-tee",
+      "name": "Baggy T-Shirt",
+      "category": "baggy-tees",
+      "price": 270,
+      "compareAtPrice": null,
+      "description": "High quality baggy tee — \"Wear & own your beauty.\" Buy 3 baggy tees and more to save.",
+      "colors": ["Grey"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "careInstructions": null,
+      "images": [],
+      "active": true,
+      "confirmed": false,
+      "confirmNotes": "Only one colour (Grey) was visible in the source video; other swatches almost certainly exist."
+    },
+    {
+      "id": "sweater",
+      "name": "Sweater",
+      "category": "sweaters",
+      "price": 360,
+      "compareAtPrice": null,
+      "description": "High quality sweater. Buy 2 sweaters and more, and save.",
+      "colors": ["White", "Blue", "Red", "Yellow", "Slate/Grey", "Pink", "Green"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "careInstructions": null,
+      "images": [],
+      "active": true,
+      "confirmed": false,
+      "confirmNotes": "No compareAtPrice seen in source video."
+    },
+    {
+      "id": "hoodie",
+      "name": "Hoodie",
+      "category": "hoodies",
+      "price": 400,
+      "compareAtPrice": null,
+      "description": "High quality hoodie. Buy 2 hoodies and more at a special price.",
+      "colors": ["White", "Blue", "Red", "Grey", "Orange", "Pink", "Green"],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "careInstructions": null,
+      "images": [],
+      "active": true,
+      "confirmed": false,
+      "confirmNotes": "No compareAtPrice seen in source video."
+    }
+  ],
+  "categories": [
+    { "id": "all", "label": "ALL" },
+    { "id": "golf-tees", "label": "GOLF TEES", "confirmed": false },
+    { "id": "t-shirts", "label": "T-SHIRTS", "confirmed": false },
+    { "id": "baggy-tees", "label": "BAGGY TEES", "confirmed": false },
+    { "id": "sweaters", "label": "SWEATERS", "confirmed": true },
+    { "id": "hoodies", "label": "HOODIES", "confirmed": true }
+  ]
+}

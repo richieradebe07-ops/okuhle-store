@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader, Container } from "@/components/Section";
 import { LegalBody } from "@/components/LegalBody";
-import { Outstanding } from "@/components/Outstanding";
+import { LegalDetail } from "@/components/Outstanding";
 import { site } from "@/lib/site";
 import { legal } from "@/lib/legal";
 
@@ -23,9 +23,11 @@ export default function PrivacyPage() {
           <h2>Who we are</h2>
           <p>
             {site.name} is a clothing business trading from {site.contact.address}, South Africa.
-            Registered name: <Outstanding>registered name</Outstanding>. Entity type:{" "}
-            <Outstanding>sole proprietor / (Pty) Ltd / CC</Outstanding>. Registration number:{" "}
-            <Outstanding>CIPC registration number</Outstanding>.
+            Registered name:{" "}
+            <LegalDetail value={legal.registeredName} label="registered name" />. Entity type:{" "}
+            <LegalDetail value={legal.entityType} label="sole proprietor / (Pty) Ltd / CC" />.
+            Registration number:{" "}
+            <LegalDetail value={legal.registrationNumber} label="CIPC registration number" />.
           </p>
           <p>
             Contact: {site.contact.email} · {site.contact.phoneDisplay}
@@ -38,8 +40,9 @@ export default function PrivacyPage() {
             is your first point of contact about it.
           </p>
           <p>
-            Information Officer: <Outstanding>name</Outstanding>, contactable at{" "}
-            <Outstanding>email address</Outstanding>.
+            Information Officer:{" "}
+            <LegalDetail value={legal.informationOfficer.name} label="name" />, contactable at{" "}
+            <LegalDetail value={legal.informationOfficer.email} label="email address" />.
             {!legal.informationOfficer.registeredWithRegulator && (
               <>
                 {" "}

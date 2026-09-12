@@ -22,8 +22,16 @@ export const legal = {
    * registration with the Information Regulator is mandatory.
    */
   informationOfficer: {
-    name: null as string | null,
-    email: null as string | null,
+    name: "Ntuthuko Sinethemba Mkhize" as string | null,
+    // The published contact address. Swap for a dedicated privacy@ mailbox if
+    // you would rather keep data-subject requests out of the general inbox.
+    email: "hello@ohyokuhle.co.za" as string | null,
+    /**
+     * STILL FALSE, AND IT MATTERS. Being the Information Officer is automatic;
+     * REGISTERING with the Information Regulator is a separate, mandatory step
+     * that only a person can do, at inforegulator.org.za. Set this to true
+     * once it is actually done — not before.
+     */
     registeredWithRegulator: false,
   },
 

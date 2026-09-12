@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader, Container } from "@/components/Section";
 import { LegalBody } from "@/components/LegalBody";
-import { Outstanding } from "@/components/Outstanding";
+import { LegalDetail, Outstanding } from "@/components/Outstanding";
 import { formatRand, site } from "@/lib/site";
 import { legal } from "@/lib/legal";
 import { products } from "@/lib/products";
@@ -29,16 +29,23 @@ export default function TermsPage() {
               Trading name: {site.name} ({site.label})
             </li>
             <li>
-              Registered name: <Outstanding>registered name</Outstanding>
+              Registered name:{" "}
+              <LegalDetail value={legal.registeredName} label="registered name" />
             </li>
             <li>
-              Legal status: <Outstanding>sole proprietor / (Pty) Ltd / CC</Outstanding>
+              Legal status:{" "}
+              <LegalDetail value={legal.entityType} label="sole proprietor / (Pty) Ltd / CC" />
             </li>
             <li>
-              Registration number: <Outstanding>CIPC registration number</Outstanding>
+              Registration number:{" "}
+              <LegalDetail value={legal.registrationNumber} label="CIPC registration number" />
             </li>
             <li>
-              VAT number: <Outstanding>VAT number, or &ldquo;not VAT registered&rdquo;</Outstanding>
+              VAT number:{" "}
+              <LegalDetail
+                value={legal.vatNumber}
+                label="VAT number, or &ldquo;not VAT registered&rdquo;"
+              />
             </li>
             <li>Physical address: {site.contact.address}, South Africa</li>
             <li>

@@ -19,3 +19,23 @@ export function Outstanding({ children }: { children: React.ReactNode }) {
     </mark>
   );
 }
+
+/**
+ * A statutory disclosure that comes from lib/legal.ts.
+ *
+ * Renders the real value once it is supplied, and the visible [outstanding]
+ * marker until then. The point is that filling in lib/legal.ts is what
+ * updates the page — an earlier version hardcoded the markers, so setting the
+ * data changed nothing and the page kept claiming a detail was missing after
+ * it had been provided.
+ */
+export function LegalDetail({
+  value,
+  label,
+}: {
+  value: string | null;
+  label: string;
+}) {
+  if (value) return <>{value}</>;
+  return <Outstanding>{label}</Outstanding>;
+}

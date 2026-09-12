@@ -46,9 +46,9 @@ export const ladder: Record<VisitorState, Rung> = {
     support: "What goes with what you already have.",
   },
   repeat: {
-    label: "Founding Member — 50 spots",
-    href: "/founding-members",
-    support: "One-time, permanent, numbered.",
+    label: "Join Okuhle+ — R299/year",
+    href: "/okuhle-plus",
+    support: "Member-only pieces, and you never miss a drop.",
   },
 };
 

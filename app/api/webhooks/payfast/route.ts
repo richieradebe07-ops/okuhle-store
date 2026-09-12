@@ -7,6 +7,7 @@ import {
   verifyItnSignature,
 } from "@/lib/payfast";
 import { orderStore } from "@/lib/orders";
+import { sendOrderConfirmation, sendOwnerOrderAlert } from "@/lib/emails";
 
 /**
  * PayFast ITN (Instant Transaction Notification) handler.
@@ -78,8 +79,31 @@ export async function POST(request: Request) {
       if (order.status !== "paid") {
         await orderStore().markPaid(orderId, data.pf_payment_id ?? "");
         console.info(`[payfast-itn] order ${orderId} paid`);
-        // TODO: send the customer's confirmation email and notify the owner
-        // once the email provider is configured.
+
+        // Notifications are deliberately AFTER the order is recorded and are
+        // never allowed to affect it. The customer has paid; if an email fails
+        // that is a support problem, not a payment problem.
+        const paidOrder = (await orderStore().get(orderId)) ?? order;
+        const buyer = {
+          name: [data.name_first, data.name_last].filter(Boolean).join(" ") || undefined,
+          phone: data.cell_number || undefined,
+        };
+
+        const [confirmation, alert] = await Promise.allSettled([
+          sendOrderConfirmation(paidOrder),
+          sendOwnerOrderAlert(paidOrder, buyer),
+        ]);
+
+        for (const [what, result] of [
+          ["customer confirmation", confirmation],
+          ["owner alert", alert],
+        ] as const) {
+          if (result.status === "rejected") {
+            console.error(`[payfast-itn] ${what} threw for ${orderId}`, result.reason);
+          } else if (!result.value.ok) {
+            console.error(`[payfast-itn] ${what} not sent for ${orderId}: ${result.value.error}`);
+          }
+        }
       }
       break;
     case "CANCELLED":

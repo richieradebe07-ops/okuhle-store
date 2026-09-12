@@ -1,19 +1,22 @@
 # Netlify build configuration.
 #
-# This file exists so importing the repo needs no settings typed into the
-# Netlify UI: the build command, the publish directory, the Next.js runtime and
-# the public environment variables are all here.
+# Deliberately MINIMAL. Netlify detects Next.js from package.json and installs
+# its Next.js Runtime automatically, and that runtime owns the publish
+# directory and the serverless wiring.
+#
+# An earlier version of this file pinned `publish = ".next"` and declared
+# `@netlify/plugin-nextjs` by hand. That produced a site that answered
+# "Page not found": with the publish directory pinned, `.next` was served as a
+# plain static folder, and `.next` has no index.html at its root. Letting the
+# runtime set it is the documented path — don't add either line back.
 #
 # ⚠️  NOTHING SECRET GOES IN THIS FILE. It is committed, so anything here is
 #     public. The Supabase anon key below is public BY DESIGN — it is the key
 #     browsers are meant to hold, and Row Level Security is what protects the
 #     data (verified: anon can neither read, insert, nor mark orders paid — see
-#     docs/supabase-setup.md). As it happens no client component reads it in
-#     this app, so today it only ever reaches server bundles; checked against
-#     a clean build, it appears nowhere under .next/static.
+#     docs/supabase-setup.md).
 #
-#     These four must be set in the Netlify UI instead, as environment
-#     variables, never here:
+#     These four go in the Netlify UI as environment variables, never here:
 #       SUPABASE_SERVICE_ROLE_KEY   bypasses RLS entirely
 #       RESEND_API_KEY              sends email as your domain
 #       PAYFAST_MERCHANT_KEY        takes money
@@ -21,7 +24,6 @@
 
 [build]
   command = "npm run build"
-  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "22"
@@ -35,6 +37,3 @@
   # Used for PayFast return URLs and the links inside emails. Change this when
   # the real domain is pointed here.
   NEXT_PUBLIC_SITE_URL = "https://okuhle-preview.netlify.app"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"

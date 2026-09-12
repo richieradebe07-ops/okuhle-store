@@ -1,0 +1,38 @@
+# Netlify build configuration.
+#
+# This file exists so importing the repo needs no settings typed into the
+# Netlify UI: the build command, the publish directory, the Next.js runtime and
+# the public environment variables are all here.
+#
+# ⚠️  NOTHING SECRET GOES IN THIS FILE. It is committed, so anything here is
+#     public. The Supabase anon key below is public BY DESIGN — it ships inside
+#     the browser bundle and Row Level Security is what protects the data
+#     (verified: anon can neither read, insert, nor mark orders paid — see
+#     docs/supabase-setup.md).
+#
+#     These four must be set in the Netlify UI instead, as environment
+#     variables, never here:
+#       SUPABASE_SERVICE_ROLE_KEY   bypasses RLS entirely
+#       RESEND_API_KEY              sends email as your domain
+#       PAYFAST_MERCHANT_KEY        takes money
+#       PAYFAST_PASSPHRASE          signs the requests that take money
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+  # Next.js inlines every NEXT_PUBLIC_* value at BUILD time, not at run time.
+  # Leaving these to the UI means the first build bakes in empty strings and
+  # the site silently behaves as though Supabase does not exist.
+  NEXT_PUBLIC_SUPABASE_URL = "https://jxlybljgrbszfrvwlcep.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_vY4d8HxlNVzOOk8LGd4Urg_D4BHvsCD"
+
+  # Used for PayFast return URLs and the links inside emails. Change this when
+  # the real domain is pointed here.
+  NEXT_PUBLIC_SITE_URL = "https://okuhle-preview.netlify.app"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

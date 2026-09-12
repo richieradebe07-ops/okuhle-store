@@ -11,7 +11,7 @@ export const site = {
     phoneDisplay: "076 198 1607",
     // international format for wa.me links
     whatsapp: "27761981607",
-    email: "hello@okuhle.co.za",
+    email: "hello@ohyokuhle.co.za",
     location: "Pietermaritzburg, KZN",
     address: "M70 Road, Mvundlweni, Pietermaritzburg",
   },

@@ -9,7 +9,7 @@ import { siteUrl } from "@/lib/site";
  * outrank or cannibalise the real store. Only the live domain is allowed to
  * be indexed, so a preview can never compete with it by accident.
  */
-const PRODUCTION_HOSTS = ["okuhle.co.za", "www.okuhle.co.za"];
+const PRODUCTION_HOSTS = ["ohyokuhle.co.za", "www.ohyokuhle.co.za"];
 
 export default function robots(): MetadataRoute.Robots {
   let host = "";

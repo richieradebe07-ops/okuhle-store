@@ -12,7 +12,7 @@ domain (SPF, DKIM, DMARC). **Nobody can add DNS records to gmail.com**, so
 *recipient* of owner alerts.
 
 ```
-FROM (sending):    orders@okuhle.co.za    ← needs a domain you own
+FROM (sending):    orders@ohyokuhle.co.za  ← the domain you own
 TO (owner alerts): ohy.okuhle@gmail.com   ← works as-is, no setup
 ```
 
@@ -46,7 +46,7 @@ deleting the line is not enough, because it stays in git history.
 ```
 RESEND_API_KEY      = re_xxxxxxxxxxxxx
 RESEND_AUDIENCE_ID  = xxxxxxxx-xxxx-xxxx
-FROM_EMAIL          = orders@okuhle.co.za
+FROM_EMAIL          = orders@ohyokuhle.co.za
 FROM_NAME            = OHY Okuhle
 OWNER_EMAIL         = ohy.okuhle@gmail.com
 ```

@@ -20,7 +20,7 @@ redirect URLs are allowed, so do that one first.
 
 Supabase → Authentication → URL Configuration:
 
-- **Site URL**: `https://okuhle.co.za` (or the Netlify URL until the domain is bought)
+- **Site URL**: `https://ohyokuhle.co.za` (or the Netlify URL until DNS points at it)
 - **Redirect URLs** — add all of these:
   ```
   http://localhost:3000/login

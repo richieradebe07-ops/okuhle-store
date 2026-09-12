@@ -40,6 +40,13 @@
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_vY4d8HxlNVzOOk8LGd4Urg_D4BHvsCD"
 
   # Production only — branch deploys and previews override this with their own
-  # URL in the build command above. Change it when the real domain is pointed
-  # here. Used for PayFast return URLs, email links and the sitemap.
+  # URL in the build command above. Used for PayFast return URLs, email links
+  # and the sitemap.
+  #
+  # ⚠️  DO NOT change this to https://ohyokuhle.co.za until DNS actually points
+  #     at this site. app/robots.ts allows indexing when this host is in its
+  #     PRODUCTION_HOSTS list, so setting the real domain while the site is
+  #     still served from netlify.app would publish "Allow: /" on the preview
+  #     and invite Google to index it — the exact thing robots.ts exists to
+  #     prevent. Point the DNS first, then change this line.
   NEXT_PUBLIC_SITE_URL = "https://okuhle-preview.netlify.app"

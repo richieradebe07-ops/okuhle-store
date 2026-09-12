@@ -105,13 +105,13 @@ Deleting the line is not enough; git keeps history.
 ## The preview is hidden from Google on purpose
 
 `app/robots.ts` returns `Disallow: /` for every host that isn't
-`okuhle.co.za`. A full copy of the shop on a `netlify.app` subdomain is not
+`ohyokuhle.co.za`. A full copy of the shop on a `netlify.app` subdomain is not
 harmless — Google treats it as duplicate content and it can outrank or
 cannibalise the real store.
 
 The switch is the host in `NEXT_PUBLIC_SITE_URL`, so it flips by itself when
 the real domain is pointed here. Verified both ways: the preview host returns
-`Disallow: /`, and `okuhle.co.za` returns `Allow: /` plus the sitemap, with the
+`Disallow: /`, and `ohyokuhle.co.za` returns `Allow: /` plus the sitemap, with the
 account and auth pages excluded.
 
 ## If the build fails

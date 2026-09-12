@@ -52,7 +52,9 @@ with it    → hasDurableOrderStore() = true  → checkout live
 ```
 
 The URL and anon key are already in `.env.example`. The anon key is **designed** to be
-public — it ships in the browser bundle. RLS is what protects the data.
+public — it is the key browsers are meant to hold. RLS is what protects the data. (No
+client component reads it today, so in this app it only reaches server bundles; that is
+a detail, not the safeguard.)
 
 ---
 

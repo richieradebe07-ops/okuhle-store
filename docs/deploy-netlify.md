@@ -84,9 +84,12 @@ session to their own server.
 That file is committed to the repo, so everything in it is public.
 
 The Supabase **URL and anon key are in there deliberately** — the anon key is
-public by design, ships inside the browser bundle, and Row Level Security is
-what protects the data. That was verified against the live database: anon can
-neither read, insert, nor mark an order paid (`docs/supabase-setup.md`).
+public by design, being the key browsers are meant to hold, and Row Level
+Security is what protects the data. That was verified against the live
+database: anon can neither read, insert, nor mark an order paid
+(`docs/supabase-setup.md`). As it happens nothing client-side reads it in this
+app, so a clean build puts it only in server bundles and nowhere under
+`.next/static` — checked, but not the reason it is safe to commit.
 
 These four go in the Netlify UI and nowhere else:
 

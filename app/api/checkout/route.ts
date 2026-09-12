@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { buildCheckoutFields, payfastConfigured, processUrl } from "@/lib/payfast";
 import { orderStore, hasDurableOrderStore } from "@/lib/orders";
 import { getProduct } from "@/lib/products";
+import { currentUser } from "@/lib/auth";
 
 /**
  * Starts a PayFast checkout.
@@ -52,13 +53,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That size isn't available." }, { status: 400 });
   }
 
+  // Attach the account when there is one, so the ITN has somewhere to put the
+  // points and the order shows up under /account/orders. A guest checkout is
+  // still perfectly valid — user_id is simply null.
+  const user = await currentUser();
+
   const order = await orderStore().create({
     amount: product.price,
     productId: product.id,
     productName: product.name,
     colour,
     size,
-    buyerEmail: typeof email === "string" ? email : undefined,
+    // The account's own address wins over anything posted from the browser:
+    // a signed-in session is stronger evidence of who this is than a form
+    // field, and it keeps the order attached to the right person.
+    buyerEmail: user?.email ?? (typeof email === "string" ? email : undefined),
+    userId: user?.id,
   });
 
   const fields = buildCheckoutFields({

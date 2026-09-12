@@ -55,3 +55,22 @@ export const ladder: Record<VisitorState, Rung> = {
 export function rungFor(state: VisitorState): Rung {
   return ladder[state];
 }
+
+/**
+ * Resolves the visitor's rung from what we actually know about them.
+ *
+ * Order matters: the highest rung they have earned wins, and paid orders
+ * outrank having an account, which outranks being on the list. Only PAID
+ * orders count — an abandoned checkout is not a customer.
+ */
+export function resolveState(input: {
+  signedIn: boolean;
+  subscribed: boolean;
+  paidOrders: number;
+}): VisitorState {
+  if (input.paidOrders >= 2) return "repeat";
+  if (input.paidOrders === 1) return "customer";
+  if (input.signedIn) return "account";
+  if (input.subscribed) return "subscribed";
+  return "anonymous";
+}

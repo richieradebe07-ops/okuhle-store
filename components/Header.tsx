@@ -5,6 +5,45 @@ import { useEffect, useState } from "react";
 import { site } from "@/lib/site";
 import { Emblem, Wordmark } from "./Logo";
 import { useWishlist } from "./WishlistProvider";
+import { useVisitorState } from "./VisitorStateProvider";
+
+/** Person outline. An icon rather than a word, to match the other actions. */
+function AccountIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="5" r="2.6" stroke="currentColor" strokeWidth="1.3" />
+      <path
+        d="M2.5 14c0-2.8 2.5-4.6 5.5-4.6s5.5 1.8 5.5 4.6"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * One link, two destinations. A visitor with a session goes to their account;
+ * everyone else goes to sign in. The dot is the only status signal — a member
+ * number in the header would be shouting.
+ */
+function AccountLink({ onNavigate }: { onNavigate?: () => void }) {
+  const { profile, ready } = useVisitorState();
+  const signedIn = ready && profile.signedIn;
+
+  return (
+    <Link
+      href={signedIn ? "/account" : "/login"}
+      className="icon-btn"
+      aria-label={signedIn ? "Your account" : "Sign in"}
+      title={signedIn ? "Your account" : "Sign in"}
+      onClick={onNavigate}
+    >
+      <AccountIcon />
+      {signedIn && profile.member && <span className="member-dot" aria-hidden="true" />}
+    </Link>
+  );
+}
 
 function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -33,6 +72,29 @@ function ThemeToggle() {
     >
       {theme === "dark" ? "☀" : "☾"}
     </button>
+  );
+}
+
+/** The account links, spelled out, for the mobile menu. */
+function MobileAccountLinks({ onNavigate }: { onNavigate: () => void }) {
+  const { profile, ready } = useVisitorState();
+
+  if (ready && profile.signedIn) {
+    return (
+      <Link href="/account" onClick={onNavigate}>
+        My Account
+      </Link>
+    );
+  }
+  return (
+    <>
+      <Link href="/login" onClick={onNavigate}>
+        Sign In
+      </Link>
+      <Link href="/signup" onClick={onNavigate}>
+        Create Account
+      </Link>
+    </>
   );
 }
 
@@ -65,6 +127,7 @@ export function Header() {
 
         <div className="header-actions">
           <ThemeToggle />
+          <AccountLink />
           <Link href="/wishlist" className="icon-btn" aria-label="Wishlist">
             ♥
             {items.length > 0 && <span className="badge">{items.length}</span>}
@@ -88,6 +151,7 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <MobileAccountLinks onNavigate={() => setOpen(false)} />
           </nav>
         </div>
       )}
@@ -152,6 +216,16 @@ export function Header() {
         .header-actions :global(.icon-btn:hover) {
           border-color: var(--accent);
           color: var(--accent);
+        }
+        .header-actions :global(.member-dot) {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 0.5rem;
+          height: 0.5rem;
+          border-radius: 50%;
+          background: var(--accent);
+          border: 1px solid var(--bg);
         }
         .header-actions :global(.badge) {
           position: absolute;

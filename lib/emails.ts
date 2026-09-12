@@ -222,3 +222,94 @@ export async function sendPasswordReset(input: {
     ].join("\n"),
   });
 }
+
+/** 7. Confirm your email address → new account */
+export async function sendEmailVerification(input: {
+  email: string;
+  confirmUrl: string;
+  firstName?: string | null;
+}): Promise<SendResult> {
+  const greeting = input.firstName ? `${input.firstName},` : "Hi,";
+
+  return sendEmail({
+    to: input.email,
+    subject: `Confirm your ${site.name} account`,
+    text: [
+      greeting,
+      "",
+      `One tap and your account is live:`,
+      "",
+      input.confirmUrl,
+      "",
+      "WHAT AN ACCOUNT GETS YOU",
+      "• Your order history and tracking in one place",
+      "• Points on every order — 1 point per R100, 10 points is R100 off",
+      "• First notice when a sold-out size is back",
+      "",
+      "No fee, and nothing is charged for having an account.",
+      "",
+      `If you didn't sign up, ignore this — the account stays unconfirmed and we`,
+      `delete it. Nobody can use it without clicking that link.`,
+      footer(),
+    ].join("\n"),
+  });
+}
+
+/**
+ * 8. Someone tried to sign up with an address that already has an account.
+ *
+ * The signup form answers identically whether or not the address is already
+ * registered, so a stranger cannot use it to find out who shops here. This
+ * email is what stops that costing the real owner of the address anything:
+ * they get told which situation they are actually in.
+ */
+export async function sendDuplicateSignupNotice(input: {
+  email: string;
+  loginUrl: string;
+  resetUrl: string;
+}): Promise<SendResult> {
+  return sendEmail({
+    to: input.email,
+    subject: `You already have an ${site.name} account`,
+    text: [
+      `Someone just tried to create an account with this email address — and`,
+      `there's already one here, so we didn't make a second.`,
+      "",
+      `If that was you: log in instead — ${input.loginUrl}`,
+      `Forgotten the password? Reset it — ${input.resetUrl}`,
+      "",
+      `If it wasn't you, there's nothing to do. Your account hasn't changed and`,
+      `nobody got access to it. Your password still works.`,
+      footer(),
+    ].join("\n"),
+  });
+}
+
+/** 9. Your data, as requested → customer (POPIA section 23) */
+export async function sendAccountDeleted(input: {
+  email: string;
+  ordersKept: number;
+}): Promise<SendResult> {
+  return sendEmail({
+    to: input.email,
+    subject: `Your ${site.name} account has been deleted`,
+    text: [
+      `Your account is gone. Your login, your points and your saved details have`,
+      `been deleted and can't be recovered.`,
+      "",
+      input.ordersKept > 0
+        ? [
+            `WHAT WE STILL HAVE, AND WHY`,
+            `${input.ordersKept} paid order record${input.ordersKept === 1 ? "" : "s"}. South African tax law`,
+            `requires us to keep records of sales for five years, so those stay — but they`,
+            `are no longer linked to an account, and nobody can log in to see them.`,
+            "",
+          ].join("\n")
+        : "You had no completed orders, so there is nothing we're required to keep.\n",
+      `You're also off the marketing list.`,
+      "",
+      `You're welcome back any time — you'd just start a new account.`,
+      footer(),
+    ].join("\n"),
+  });
+}

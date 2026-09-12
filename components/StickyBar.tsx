@@ -1,9 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { rungFor } from "@/lib/ladder";
 import { useVisitorState } from "./VisitorStateProvider";
 import { site, whatsappLink } from "@/lib/site";
+
+/**
+ * Pages that already have exactly one job.
+ *
+ * A bar reading "Join the list" across the bottom of the signup form is two
+ * things at once: a second competing ask, and something sitting on top of the
+ * consent checkboxes. Same for the account area, where the person is already
+ * as far up the ladder as this bar can push them.
+ */
+const SUPPRESSED = ["/login", "/signup", "/forgot-password", "/reset-password", "/track", "/account"];
 
 /**
  * One primary action, fixed to the bottom. The rung decides what it is.
@@ -12,7 +23,12 @@ import { site, whatsappLink } from "@/lib/site";
  */
 export function StickyBar() {
   const { state, ready } = useVisitorState();
+  const pathname = usePathname();
   const rung = rungFor(state);
+
+  if (SUPPRESSED.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+    return null;
+  }
 
   return (
     <div

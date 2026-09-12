@@ -8,6 +8,7 @@ import {
 } from "@/lib/payfast";
 import { orderStore } from "@/lib/orders";
 import { sendOrderConfirmation, sendOwnerOrderAlert } from "@/lib/emails";
+import { awardPointsForOrder } from "@/lib/rewards";
 
 /**
  * PayFast ITN (Instant Transaction Notification) handler.
@@ -88,6 +89,18 @@ export async function POST(request: Request) {
           name: [data.name_first, data.name_last].filter(Boolean).join(" ") || undefined,
           phone: data.cell_number || undefined,
         };
+
+        // Points are earned here, on confirmed payment — never at checkout,
+        // where an abandoned cart would mint them. Guest orders have no
+        // user_id and earn nothing; that is stated on the loyalty page.
+        const points = await awardPointsForOrder(paidOrder);
+        if (points.awarded) {
+          console.info(`[payfast-itn] awarded ${points.points} points for ${orderId}`);
+        } else if (points.reason === "error") {
+          // The customer has paid and is owed these points. Loud, because it
+          // needs a human to put right.
+          console.error(`[payfast-itn] POINTS NOT AWARDED for ${orderId} — owed to the customer`);
+        }
 
         const [confirmation, alert] = await Promise.allSettled([
           sendOrderConfirmation(paidOrder),

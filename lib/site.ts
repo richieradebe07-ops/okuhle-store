@@ -42,6 +42,7 @@ export const site = {
       { label: "Rewards", href: "/loyalty" },
       { label: "FAQ", href: "/faq" },
       { label: "Shipping", href: "/shipping" },
+      { label: "Track an Order", href: "/track" },
       { label: "Wishlist", href: "/wishlist" },
     ],
     legal: [
@@ -59,4 +60,24 @@ export function whatsappLink(message: string) {
 
 export function formatRand(amount: number) {
   return `R${amount.toLocaleString("en-ZA")}`;
+}
+
+/**
+ * Absolute base URL for links that leave the app — email links and the
+ * redirect targets Supabase sends people back to.
+ *
+ * Falls back to the request's own origin when the env var is unset, so a
+ * preview deploy emails preview links rather than localhost ones.
+ */
+export function siteUrl(request?: Request): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL;
+  if (configured) return configured.replace(/\/$/, "");
+  if (request) {
+    try {
+      return new URL(request.url).origin;
+    } catch {
+      // fall through
+    }
+  }
+  return "http://localhost:3000";
 }

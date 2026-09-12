@@ -81,3 +81,36 @@ export function toCents(rand: number): number {
 export function fromCents(cents: number): number {
   return cents / 100;
 }
+
+/**
+ * Query as the signed-in customer, using their access token.
+ *
+ * The anon key plus the user's JWT means Row Level Security applies, so the
+ * database itself refuses to return another customer's rows. The account
+ * pages read through this rather than the service-role key on purpose: a
+ * mistyped filter in application code then cannot leak anyone's orders — the
+ * policies verified in docs/supabase-setup.md are doing the enforcing.
+ */
+export async function userQuery<T>(path: string, accessToken: string): Promise<T> {
+  const { url, anonKey } = supabaseConfig();
+
+  if (!url || !anonKey) {
+    throw new Error("Supabase is not configured (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)");
+  }
+
+  const res = await fetch(`${url}/rest/v1/${path}`, {
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Supabase GET ${path} failed (${res.status}): ${detail}`);
+  }
+
+  return (await res.json()) as T;
+}

@@ -126,13 +126,19 @@ uniqueness constraint, then deletes everything. Eight checks, no residue.
 - Loyalty points against real orders
 - The renewal reminder job
 
+## Built on top since
+
+- **Supabase Auth** — signup, login, password reset, the `/account` area, and the POPIA
+  data-subject rights. See `docs/auth-setup.md`.
+- **Points on payment confirmation** — awarded from the ITN, once per order, enforced by
+  `reward_events_order_earn_idx` rather than application code.
+- **Migration 0002** — `consent_records.user_id` is now `on delete set null`, so the consent
+  audit trail outlives a deleted account instead of cascading away with it.
+
 ## Still to build on top
 
-- **Supabase Auth** — signup, login, password reset. `orders.user_id` and all of
-  `memberships` reference `auth.users`, so the tables are ready and empty.
 - Membership creation from a confirmed R299 payment
-- Awarding points on payment confirmation (the ledger and its once-per-order unique index
-  are in place)
+- Points redemption at checkout (`redeemPoints()` exists; nothing spends them yet)
 - Renewal reminder job (needs a scheduler; `memberships_expiry_idx` supports the query)
 - Admin order view
 

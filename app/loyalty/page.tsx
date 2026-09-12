@@ -115,9 +115,12 @@ export default function LoyaltyPage() {
             <Accordion key={f.q} q={f.q} a={f.a} />
           ))}
         </div>
-        <div style={{ marginTop: "2.5rem" }}>
-          <Link className="btn" href="/shop">
-            Start earning
+        <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          <Link className="btn" href="/signup">
+            Create a free account
+          </Link>
+          <Link className="btn btn-ghost" href="/shop">
+            Browse the collection
           </Link>
         </div>
       </Section>
@@ -131,8 +134,9 @@ export default function LoyaltyPage() {
             padding: "1rem 1.25rem",
           }}
         >
-          Accounts and automatic point tracking arrive with card checkout. Until then, order on
-          WhatsApp as usual — we&apos;ll backdate points earned in the meantime.
+          Points are added automatically when a card payment clears and you were signed in when
+          you ordered. Bought as a guest, or paid by EFT or on WhatsApp? Those we add by hand —
+          send us the order number and we&apos;ll credit it.
         </p>
       </Container>
     </>

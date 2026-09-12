@@ -23,7 +23,12 @@
 #       PAYFAST_PASSPHRASE          signs the requests that take money
 
 [build]
-  command = "npm run build"
+  # Branch deploys and deploy previews each get their own URL, so they should
+  # build with it rather than inheriting the production one below — otherwise a
+  # branch deploy writes the preview site's address into its own sitemap and
+  # into any link it generates. Netlify sets CONTEXT and DEPLOY_PRIME_URL for
+  # us; production is left alone so it keeps the real domain once one is bought.
+  command = 'if [ "$CONTEXT" != production ]; then export NEXT_PUBLIC_SITE_URL="$DEPLOY_PRIME_URL"; fi; npm run build'
 
 [build.environment]
   NODE_VERSION = "22"
@@ -34,6 +39,7 @@
   NEXT_PUBLIC_SUPABASE_URL = "https://jxlybljgrbszfrvwlcep.supabase.co"
   NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_vY4d8HxlNVzOOk8LGd4Urg_D4BHvsCD"
 
-  # Used for PayFast return URLs and the links inside emails. Change this when
-  # the real domain is pointed here.
+  # Production only — branch deploys and previews override this with their own
+  # URL in the build command above. Change it when the real domain is pointed
+  # here. Used for PayFast return URLs, email links and the sitemap.
   NEXT_PUBLIC_SITE_URL = "https://okuhle-preview.netlify.app"

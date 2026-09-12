@@ -25,6 +25,34 @@ export function LegalBody({ children }: { children: React.ReactNode }) {
         .legal ul {
           padding-left: 1.2rem;
         }
+        .legal li {
+          margin-bottom: 0.4rem;
+        }
+        .legal table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1rem 0 1.5rem;
+          font-size: 0.92rem;
+        }
+        .legal th {
+          text-align: left;
+          font-weight: 500;
+          color: var(--fg);
+          border-bottom: 1px solid var(--line);
+          padding: 0.6rem 1rem 0.6rem 0;
+        }
+        .legal td {
+          border-bottom: 1px solid var(--line);
+          padding: 0.7rem 1rem 0.7rem 0;
+          vertical-align: top;
+        }
+        .legal td:first-child {
+          color: var(--fg);
+          width: 40%;
+        }
+        .legal a {
+          color: var(--accent);
+        }
       `}</style>
     </div>
   );

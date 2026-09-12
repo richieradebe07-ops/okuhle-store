@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { StickyBar } from "@/components/StickyBar";
 import { WishlistProvider } from "@/components/WishlistProvider";
 import { Countdown } from "@/components/Countdown";
+import { Assistant } from "@/components/Assistant";
 import { VisitorStateProvider } from "@/components/VisitorStateProvider";
 import { site } from "@/lib/site";
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <Footer />
           <StickyBar />
+          <Assistant />
         </WishlistProvider>
         </VisitorStateProvider>
       </body>

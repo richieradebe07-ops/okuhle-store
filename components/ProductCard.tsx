@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Product, savings } from "@/lib/products";
 import { formatRand, site, whatsappLink } from "@/lib/site";
 import { layBy, layByMonthly, pointsFor } from "@/lib/loyalty";
+import { BuyNow } from "./BuyNow";
 import { useWishlist } from "./WishlistProvider";
 import { Emblem } from "./Logo";
 
@@ -16,7 +17,13 @@ function isLight(hex: string) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.55;
 }
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  checkoutEnabled = false,
+}: {
+  product: Product;
+  checkoutEnabled?: boolean;
+}) {
   const [color, setColor] = useState(product.colors[0]);
   const [size, setSize] = useState<string | null>(null);
   const { has, toggle } = useWishlist();
@@ -207,14 +214,22 @@ Is this available?`;
           </div>
         </div>
 
+        <BuyNow
+          productId={product.id}
+          colour={color.name}
+          size={size}
+          price={product.price}
+          enabled={checkoutEnabled}
+        />
+
         <a
-          className="btn"
+          className={checkoutEnabled ? "btn btn-ghost" : "btn"}
           href={whatsappLink(orderMessage)}
           target="_blank"
           rel="noopener noreferrer"
           style={{ width: "100%" }}
         >
-          Order Now
+          {checkoutEnabled ? "Or order via WhatsApp" : "Order via WhatsApp"}
         </a>
 
         <p

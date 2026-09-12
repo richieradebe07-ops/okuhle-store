@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { getProduct, products } from "@/lib/products";
 import { formatRand, site, whatsappLink } from "@/lib/site";
 import { layBy, layByMonthly, loyalty, pointsFor } from "@/lib/loyalty";
+import { payfastConfigured } from "@/lib/payfast";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
@@ -52,7 +53,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           marginTop: "2rem",
         }}
       >
-        <ProductCard product={product} />
+        <ProductCard product={product} checkoutEnabled={payfastConfigured()} />
 
         <div>
           <h1 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", margin: 0 }}>{product.name}</h1>
@@ -116,7 +117,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           }}
         >
           {related.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.id} product={p} checkoutEnabled={payfastConfigured()} />
           ))}
         </div>
       </section>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { categories, products, CategoryId } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 
-export function ShopGrid() {
+export function ShopGrid({ checkoutEnabled = false }: { checkoutEnabled?: boolean }) {
   const [active, setActive] = useState<CategoryId | "all">("all");
   const visible = products.filter(
     (p) => p.active && (active === "all" || p.category === active)
@@ -50,7 +50,7 @@ export function ShopGrid() {
         }}
       >
         {visible.map((p) => (
-          <ProductCard key={p.id} product={p} />
+          <ProductCard key={p.id} product={p} checkoutEnabled={checkoutEnabled} />
         ))}
       </div>
 

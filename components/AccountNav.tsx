@@ -11,7 +11,11 @@ const links = [
   { href: "/account/settings", label: "Settings" },
 ];
 
-export function AccountNav() {
+/**
+ * `isOwner` is decided on the server and passed in. The moderation page checks
+ * again for itself — hiding a link is presentation, never protection.
+ */
+export function AccountNav({ isOwner = false }: { isOwner?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const [signingOut, setSigningOut] = useState(false);
@@ -39,7 +43,7 @@ export function AccountNav() {
         borderBottom: "1px solid var(--line)",
       }}
     >
-      {links.map((link) => {
+      {(isOwner ? [...links, { href: "/account/reviews", label: "Approve reviews" }] : links).map((link) => {
         const active = pathname === link.href;
         return (
           <Link

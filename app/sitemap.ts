@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/gallery", priority: 0.6 },
     { path: "/okuhle-plus", priority: 0.8 },
     { path: "/loyalty", priority: 0.6 },
+    { path: "/reviews", priority: 0.7 },
     { path: "/faq", priority: 0.5 },
     { path: "/order", priority: 0.6 },
     { path: "/shipping", priority: 0.4 },

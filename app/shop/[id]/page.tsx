@@ -7,6 +7,16 @@ import { getProduct, products } from "@/lib/products";
 import { formatRand, site, whatsappLink } from "@/lib/site";
 import { layBy, layByMonthly, loyalty, pointsFor } from "@/lib/loyalty";
 import { payfastConfigured } from "@/lib/payfast";
+import { ReviewForm } from "@/components/ReviewForm";
+import { ReviewList, RatingSummaryLine } from "@/components/ReviewList";
+import { publishedForProduct, summaryForProduct } from "@/lib/reviews";
+
+/**
+ * These pages are prerendered, so without this a review approved today would
+ * not appear until the next deploy. Five minutes keeps them fast and
+ * indexable while still picking up newly published reviews on their own.
+ */
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
@@ -29,6 +39,12 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   if (!product) notFound();
 
   const related = products.filter((p) => p.id !== product.id).slice(0, 3);
+
+  // Read alongside each other rather than in sequence; neither needs the other.
+  const [reviews, summary] = await Promise.all([
+    publishedForProduct(product.id),
+    summaryForProduct(product.id),
+  ]);
 
   return (
     <Container style={{ padding: "clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem)" }}>
@@ -105,6 +121,67 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
       </div>
+
+      {/* scrollMarginTop keeps the heading clear of the sticky header when
+          arriving from a #reviews link — from an order, a shop card, or the
+          reviews page. */}
+      <section
+        id="reviews"
+        style={{ marginTop: "clamp(3rem, 8vw, 5rem)", scrollMarginTop: "5.5rem" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: "1rem",
+            flexWrap: "wrap",
+            borderBottom: "1px solid var(--line)",
+            paddingBottom: "1rem",
+          }}
+        >
+          <h2 style={{ fontSize: "clamp(1.6rem, 4vw, 2.2rem)", margin: 0 }}>
+            What people say
+          </h2>
+          {summary && <RatingSummaryLine summary={summary} size="1.1rem" />}
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gap: "clamp(2rem, 5vw, 3.5rem)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            marginTop: "2rem",
+          }}
+        >
+          <div>
+            {reviews.length > 0 ? (
+              <ReviewList reviews={reviews} />
+            ) : (
+              <div className="card" style={{ padding: "1.75rem" }}>
+                <h3 style={{ margin: 0, fontSize: "1.1rem" }}>No reviews yet</h3>
+                <p
+                  style={{
+                    color: "var(--fg-muted)",
+                    margin: "0.75rem 0 0",
+                    fontSize: "0.92rem",
+                  }}
+                >
+                  Nothing here yet — and we would rather show you that than pad the page out.
+                  If you have worn this one, yours would be the first.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h3 style={{ margin: "0 0 1.25rem", fontSize: "1.1rem" }}>
+              Worn this? Tell the next person.
+            </h3>
+            <ReviewForm productId={product.id} productName={product.name} />
+          </div>
+        </div>
+      </section>
 
       <section style={{ marginTop: "clamp(3rem, 8vw, 5rem)" }}>
         <p className="eyebrow">You may also like</p>

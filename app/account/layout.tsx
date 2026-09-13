@@ -1,6 +1,7 @@
 import { Container } from "@/components/Section";
 import { AccountNav } from "@/components/AccountNav";
 import { requireSession } from "@/lib/auth";
+import { isOwnerEmail } from "@/lib/reviews";
 
 /**
  * Everything under /account requires a session.
@@ -11,12 +12,12 @@ import { requireSession } from "@/lib/auth";
  * Supabase whether the token is genuine.
  */
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
-  await requireSession("/account");
+  const session = await requireSession("/account");
 
   return (
     <div style={{ padding: "clamp(1.5rem, 5vw, 3rem) 0 clamp(3rem, 8vw, 6rem)" }}>
       <Container>
-        <AccountNav />
+        <AccountNav isOwner={isOwnerEmail(session.user.email)} />
         <div style={{ marginTop: "clamp(2rem, 5vw, 3rem)" }}>{children}</div>
       </Container>
     </div>

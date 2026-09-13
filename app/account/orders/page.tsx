@@ -88,7 +88,22 @@ export default async function OrdersPage() {
                 </p>
               )}
 
-              <p style={{ margin: "1rem 0 0", fontSize: "0.85rem" }}>
+              <p
+                style={{
+                  margin: "1rem 0 0",
+                  fontSize: "0.85rem",
+                  display: "flex",
+                  gap: "1.25rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                {/* Only on paid orders — there is nothing to review until the
+                    piece has actually been made and sent. */}
+                {order.status === "paid" && (
+                  <Link href={`/shop/${order.productId}#reviews`} style={{ color: "var(--accent)" }}>
+                    Review the {order.productName}
+                  </Link>
+                )}
                 <a
                   href={whatsappLink(`Hi ${site.name}, I'm asking about order ${order.id}.`)}
                   target="_blank"

@@ -9,6 +9,9 @@ import { layBy, layByMonthly, pointsFor } from "@/lib/loyalty";
 import { BuyNow } from "./BuyNow";
 import { useWishlist } from "./WishlistProvider";
 import { Emblem } from "./Logo";
+import { Stars } from "./Stars";
+// Type-only, so none of lib/reviews' server-side code reaches this bundle.
+import type { RatingSummary } from "@/lib/reviews-shared";
 
 /** Relative luminance, to decide whether artwork on this colour should be black or white. */
 function isLight(hex: string) {
@@ -18,11 +21,14 @@ function isLight(hex: string) {
 }
 
 export function ProductCard({
+  summary,
   product,
   checkoutEnabled = false,
 }: {
   product: Product;
   checkoutEnabled?: boolean;
+  /** Star average, when this piece has published reviews. Omitted when none. */
+  summary?: RatingSummary | null;
 }) {
   const [color, setColor] = useState(product.colors[0]);
   const [size, setSize] = useState<string | null>(null);
@@ -124,6 +130,32 @@ Is this available?`;
               {product.name}
             </Link>
           </h3>
+          {/* Only rendered once there is something real behind it — an empty
+              row of grey stars on every card says "nobody has bought this". */}
+          {summary && summary.count > 0 && (
+            <Link
+              href={`/shop/${product.id}#reviews`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                margin: "0.5rem 0 0",
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <Stars rating={summary.average} size="0.85rem" />
+              <span
+                style={{
+                  fontSize: "0.78rem",
+                  color: "var(--fg-muted)",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {summary.average} ({summary.count})
+              </span>
+            </Link>
+          )}
           <p style={{ color: "var(--fg-muted)", fontSize: "0.86rem", margin: "0.35rem 0 0" }}>
             {product.tagline ?? product.description}
           </p>

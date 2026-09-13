@@ -3,8 +3,16 @@
 import { useState } from "react";
 import { categories, products, CategoryId } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
+import type { RatingSummary } from "@/lib/reviews-shared";
 
-export function ShopGrid({ checkoutEnabled = false }: { checkoutEnabled?: boolean }) {
+export function ShopGrid({
+  checkoutEnabled = false,
+  summaries = {},
+}: {
+  checkoutEnabled?: boolean;
+  /** Keyed by product id. Fetched on the server, since this grid is a client component. */
+  summaries?: Record<string, RatingSummary>;
+}) {
   const [active, setActive] = useState<CategoryId | "all">("all");
   const visible = products.filter(
     (p) => p.active && (active === "all" || p.category === active)
@@ -50,7 +58,12 @@ export function ShopGrid({ checkoutEnabled = false }: { checkoutEnabled?: boolea
         }}
       >
         {visible.map((p) => (
-          <ProductCard key={p.id} product={p} checkoutEnabled={checkoutEnabled} />
+          <ProductCard
+            key={p.id}
+            product={p}
+            checkoutEnabled={checkoutEnabled}
+            summary={summaries[p.id] ?? null}
+          />
         ))}
       </div>
 

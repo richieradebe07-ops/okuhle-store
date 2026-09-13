@@ -313,3 +313,45 @@ export async function sendAccountDeleted(input: {
     ].join("\n"),
   });
 }
+
+/**
+ * 10. New review awaiting moderation → owner.
+ *
+ * Nothing appears on the site until this is actioned, so the alert leads with
+ * the words themselves rather than making the owner click through to find out
+ * whether it needs attention.
+ */
+export async function sendOwnerReviewAlert(input: {
+  displayName: string;
+  rating: number | null;
+  body: string;
+  productName: string | null;
+  verifiedPurchase: boolean;
+  moderationUrl: string;
+}): Promise<SendResult> {
+  const { ownerEmail } = emailConfig();
+  const stars = input.rating ? `${"★".repeat(input.rating)}${"☆".repeat(5 - input.rating)}` : "no rating";
+  const about = input.productName ?? "the brand";
+
+  return sendEmail({
+    to: ownerEmail,
+    subject: `New review — ${stars} on ${about}${input.verifiedPurchase ? " (verified buyer)" : ""}`,
+    text: [
+      `${input.displayName} left a review of ${about}.`,
+      "",
+      input.rating ? `Rating:   ${stars} (${input.rating}/5)` : "Rating:   none given",
+      `Verified: ${input.verifiedPurchase ? "yes — matched to a paid order" : "no — we could not match a purchase"}`,
+      "",
+      "WHAT THEY WROTE",
+      input.body,
+      "",
+      "———",
+      `This is NOT on the site yet. Nothing publishes without you:`,
+      input.moderationUrl,
+      "",
+      `A review you reject is kept, not deleted, so there is a record of what`,
+      `was said and what you decided.`,
+      footer(),
+    ].join("\n"),
+  });
+}

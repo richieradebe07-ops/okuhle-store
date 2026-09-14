@@ -4,6 +4,7 @@ import { Container, Section } from "@/components/Section";
 import { ProductCard } from "@/components/ProductCard";
 import { EmailSignup } from "@/components/EmailSignup";
 import { PrimaryCta } from "@/components/PrimaryCta";
+import { PetalLayer } from "@/components/PetalLayer";
 import { products, lookbook } from "@/lib/products";
 import { formatRand, site } from "@/lib/site";
 import { layBy, loyalty } from "@/lib/loyalty";
@@ -13,6 +14,10 @@ export default function Home() {
 
   return (
     <>
+      {/* Signature entrance moment — homepage only, per the brief's own
+          scope recommendation. Fixed/behind everything, zero layout impact. */}
+      <PetalLayer />
+
       {/* Hero */}
       <section style={{ borderBottom: "1px solid var(--line)" }}>
         <Container style={{ padding: "clamp(3rem, 9vw, 7rem) clamp(1rem, 4vw, 3rem)" }}>

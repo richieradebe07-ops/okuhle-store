@@ -198,3 +198,79 @@ a:focus-visible {
   opacity: 1;
   transform: none;
 }
+
+/*
+ * Homepage gold-petal scroll effect (components/PetalLayer.tsx). Kept here,
+ * not in a styled-jsx block on the component, so it's part of the CSS the
+ * browser has before first paint — see the comment at the top of that file
+ * for why that specific ordering matters (it's not a style preference, it
+ * fixes a measured layout-shift bug).
+ */
+.petal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  top: -10vh;
+  /* Kept low enough that even a petal directly overlapping body text keeps
+     contrast above 4.5:1 against --bg — verified: gold #b8873b blended at
+     this opacity over the lightest page background still clears the
+     minimum with real margin, not just barely. */
+  opacity: 0.12;
+  will-change: transform;
+}
+
+/* Performance budget: 15 desktop, 10 tablet, 6 mobile. Hiding via nth-child
+   rather than rendering fewer elements keeps server and client markup
+   identical — no hydration mismatch. */
+@media (max-width: 900px) {
+  .petal:nth-child(n + 11) {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .petal:nth-child(n + 7) {
+    display: none;
+  }
+}
+
+@supports (animation-timeline: view()) and (animation-range: entry) {
+  .petal {
+    animation-name: petal-fall;
+    animation-timing-function: linear;
+    /* Exactly one pass, mapped 1:1 onto animation-range — see the long
+       comment in PetalLayer.tsx on why this isn't animation-delay +
+       iteration-count: infinite (that combination doesn't do what it
+       looks like it does on a bounded scroll timeline). animation-duration
+       is deliberately unset: its initial value, auto, is what makes a
+       single iteration span the full animation-range on a scroll timeline. */
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: var(--petal-range-start) 100%;
+  }
+  @keyframes petal-fall {
+    from {
+      transform: translate3d(calc(var(--petal-drift) * -1), 0, 0) rotate(calc(var(--petal-rot) * -1));
+      opacity: 0.12;
+    }
+    50% {
+      transform: translate3d(var(--petal-drift), 65vh, 0) rotate(var(--petal-rot));
+    }
+    to {
+      transform: translate3d(calc(var(--petal-drift) * -1), 130vh, 0) rotate(calc(var(--petal-rot) * 2));
+      opacity: 0.12;
+    }
+  }
+}
+
+/* Not optional — accessibility requirement, not a preference. */
+@media (prefers-reduced-motion: reduce) {
+  .petal-layer {
+    display: none;
+  }
+}

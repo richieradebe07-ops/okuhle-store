@@ -266,11 +266,24 @@ export function Header() {
           font-size: 1rem;
           letter-spacing: 0.2em;
           text-transform: uppercase;
+          /* 44px minimum tap target (WCAG 2.5.5) — the font's own line-height
+             alone was well under that. */
+          display: flex;
+          align-items: center;
+          min-height: 44px;
         }
         .mobile-menu :global(a:hover) {
           color: var(--accent);
         }
-        @media (min-width: 900px) {
+        /*
+         * 1240px, not the more conventional ~900px tablet breakpoint — the
+         * ten-item nav plus logo plus header actions measures ~1190px at
+         * minimum (verified: logo 116px + nav 825px + actions 131px + gaps
+         * + padding), so anything narrower genuinely doesn't fit and was
+         * overflowing off-screen at common viewports like 1024×768 iPad
+         * landscape. Re-measure this if nav items are added or removed.
+         */
+        @media (min-width: 1240px) {
           .desktop-nav {
             display: flex;
           }

@@ -51,6 +51,7 @@ export const site = {
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms & Conditions", href: "/terms" },
       { label: "Cookie Policy", href: "/cookies" },
+      { label: "Accessibility", href: "/accessibility" },
     ],
   },
 };

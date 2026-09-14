@@ -10,6 +10,8 @@ import { BuyNow } from "./BuyNow";
 import { useWishlist } from "./WishlistProvider";
 import { Emblem } from "./Logo";
 import { Stars } from "./Stars";
+import { ScarcityBadge } from "./ScarcityBadge";
+import { SizeGuide } from "./SizeGuide";
 // Type-only, so none of lib/reviews' server-side code reaches this bundle.
 import type { RatingSummary } from "@/lib/reviews-shared";
 
@@ -32,8 +34,21 @@ export function ProductCard({
 }) {
   const [color, setColor] = useState(product.colors[0]);
   const [size, setSize] = useState<string | null>(null);
+  const [angleIndex, setAngleIndex] = useState(0);
   const { has, toggle } = useWishlist();
   const saved = savings(product);
+
+  // Extra angles (back, detail close-up, ...) alongside the primary shot —
+  // optional, and empty for every colourway until that photography exists.
+  const angles = [color.image, ...(color.images ?? [])].filter(
+    (src, i, arr): src is string => Boolean(src) && arr.indexOf(src) === i
+  );
+  const mainImage = angles[angleIndex] ?? color.image;
+
+  function selectColor(c: typeof color) {
+    setColor(c);
+    setAngleIndex(0);
+  }
 
   const orderMessage = `Hi ${site.name}! I'd like to order:
 
@@ -50,7 +65,7 @@ Is this available?`;
         style={{
           position: "relative",
           aspectRatio: "1 / 1",
-          background: color.image ? "#ffffff" : color.hex,
+          background: mainImage ? "#ffffff" : color.hex,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -58,9 +73,9 @@ Is this available?`;
           overflow: "hidden",
         }}
       >
-        {color.image ? (
+        {mainImage ? (
           <Image
-            src={color.image}
+            src={mainImage}
             alt={`${product.name} in ${color.name}`}
             fill
             sizes="(max-width: 700px) 100vw, 33vw"
@@ -123,6 +138,33 @@ Is this available?`;
         </button>
       </div>
 
+      {/* Only renders once a colourway actually has more than one angle
+          photographed — currently none do, so this is normally absent. */}
+      {angles.length > 1 && (
+        <div style={{ display: "flex", gap: "0.4rem", padding: "0.6rem 1.25rem 0" }}>
+          {angles.map((src, i) => (
+            <button
+              key={src}
+              onClick={() => setAngleIndex(i)}
+              aria-label={`View angle ${i + 1}`}
+              aria-pressed={i === angleIndex}
+              style={{
+                position: "relative",
+                width: "2.6rem",
+                height: "2.6rem",
+                overflow: "hidden",
+                padding: 0,
+                cursor: "pointer",
+                border: i === angleIndex ? "2px solid var(--accent)" : "1px solid var(--line)",
+                background: "#ffffff",
+              }}
+            >
+              <Image src={src} alt="" fill sizes="42px" style={{ objectFit: "cover" }} />
+            </button>
+          ))}
+        </div>
+      )}
+
       <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
         <div>
           <h3 style={{ fontSize: "1.35rem", margin: 0 }}>
@@ -161,6 +203,8 @@ Is this available?`;
           </p>
         </div>
 
+        <ScarcityBadge product={product} />
+
         <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem" }}>
           <span className="display" style={{ fontSize: "1.5rem", color: "var(--accent)" }}>
             {formatRand(product.price)}
@@ -197,7 +241,7 @@ Is this available?`;
             {product.colors.map((c) => (
               <button
                 key={c.name}
-                onClick={() => setColor(c)}
+                onClick={() => selectColor(c)}
                 aria-label={c.name}
                 aria-pressed={c.name === color.name}
                 style={{
@@ -218,12 +262,15 @@ Is this available?`;
         </div>
 
         <div>
-          <FieldLabel>
-            Size:{" "}
-            <span style={{ color: size ? "var(--accent)" : "var(--fg-muted)" }}>
-              {size ?? "Select a size"}
-            </span>
-          </FieldLabel>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "0.75rem" }}>
+            <FieldLabel>
+              Size:{" "}
+              <span style={{ color: size ? "var(--accent)" : "var(--fg-muted)" }}>
+                {size ?? "Select a size"}
+              </span>
+            </FieldLabel>
+            <SizeGuide category={product.category} productName={product.name} />
+          </div>
           <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
             {product.sizes.map((s) => (
               <button

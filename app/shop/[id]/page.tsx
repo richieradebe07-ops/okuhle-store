@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/Section";
 import { ProductCard } from "@/components/ProductCard";
 import { getProduct, products } from "@/lib/products";
-import { formatRand, site, whatsappLink } from "@/lib/site";
+import { formatRand, site, siteUrl, whatsappLink } from "@/lib/site";
 import { layBy, layByMonthly, loyalty, pointsFor } from "@/lib/loyalty";
 import { payfastConfigured } from "@/lib/payfast";
 import { ReviewForm } from "@/components/ReviewForm";
@@ -46,8 +46,46 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     summaryForProduct(product.id),
   ]);
 
+  const base = siteUrl();
+  const productImages = product.colors
+    .map((c) => c.image)
+    .filter((src): src is string => Boolean(src))
+    .map((src) => `${base}${src}`);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    ...(productImages.length > 0 ? { image: productImages } : {}),
+    brand: { "@type": "Brand", name: site.name },
+    ...(summary && summary.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: summary.average,
+            reviewCount: summary.count,
+          },
+        }
+      : {}),
+    offers: {
+      "@type": "Offer",
+      url: `${base}/shop/${product.id}`,
+      priceCurrency: "ZAR",
+      price: product.price,
+      // Made to order, not stock-tracked — genuinely available to order
+      // unless scarcity data says otherwise (see lib/products.scarcityLabel).
+      availability:
+        product.restockStatus === "planned"
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+    },
+  };
+
   return (
     <Container style={{ padding: "clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem)" }}>
+      {/* Static JSON built above from our own data, not user input. */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Link
         href="/shop"
         style={{

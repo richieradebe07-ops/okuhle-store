@@ -3,7 +3,17 @@ export type ProductColor = {
   hex: string;
   /** Product shot for this colourway. Falls back to a swatch tile when absent. */
   image?: string;
+  /**
+   * Additional angles of the same shot (back, detail close-up, and so on).
+   * Optional and currently unused by any product — most colourways only have
+   * the one photo in `image`. Set this once more photography exists rather
+   * than reusing the same shot to fake a gallery.
+   */
+  images?: string[];
 };
+
+/** Stated only once real numbers exist for a product — see restockStatus below. */
+export type RestockStatus = "none" | "planned" | "back_in_stock" | "new";
 
 export type Product = {
   id: string;
@@ -22,6 +32,12 @@ export type Product = {
   bulkOffer?: string;
   images: string[];
   active: boolean;
+  /** Units in the current production run, if this piece is a limited run. */
+  runSize?: number;
+  /** Units left from that run. Omit rather than guess — see scarcityLabel(). */
+  unitsRemaining?: number;
+  isLimited?: boolean;
+  restockStatus?: RestockStatus;
 };
 
 export type CategoryId =
@@ -195,4 +211,27 @@ export function lookbook() {
 export function savings(product: Product) {
   if (!product.compareAtPrice) return 0;
   return product.compareAtPrice - product.price;
+}
+
+/**
+ * What to say about stock, in real customer words — or nothing at all.
+ *
+ * Returns null unless the product actually carries real run/stock data. A
+ * generic "limited stock" line on every product would be the fake urgency
+ * this brand's actual made-to-order model doesn't need — silence is the
+ * correct default, not a placeholder.
+ */
+export function scarcityLabel(product: Product): string | null {
+  if (
+    typeof product.runSize === "number" &&
+    typeof product.unitsRemaining === "number"
+  ) {
+    return `${product.runSize} made — ${product.unitsRemaining} left`;
+  }
+  if (product.isLimited) {
+    return "Made to order — this colourway won't be restocked";
+  }
+  if (product.restockStatus === "back_in_stock") return "Back in stock";
+  if (product.restockStatus === "new") return "New this drop";
+  return null;
 }

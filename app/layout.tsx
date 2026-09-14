@@ -8,6 +8,7 @@ import { Countdown } from "@/components/Countdown";
 import { Assistant } from "@/components/Assistant";
 import { VisitorStateProvider } from "@/components/VisitorStateProvider";
 import { site } from "@/lib/site";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Assistant />
         </WishlistProvider>
         </VisitorStateProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

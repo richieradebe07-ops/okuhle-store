@@ -27,9 +27,16 @@ export function pointsFor(amountRand: number) {
   return Math.floor(amountRand / loyalty.randPerPoint);
 }
 
-/** How many more points until the next R100 reward. */
+/**
+ * How many more points until the next R100 reward.
+ *
+ * A brand-new account (balance 0) needs the full `redeemPoints`, not 0 — plain
+ * modulo arithmetic gives 0 for that case, which would read as "reward ready."
+ */
 export function pointsToNextReward(balance: number) {
-  return (loyalty.redeemPoints - (balance % loyalty.redeemPoints)) % loyalty.redeemPoints;
+  if (balance <= 0) return loyalty.redeemPoints;
+  const remainder = balance % loyalty.redeemPoints;
+  return remainder === 0 ? 0 : loyalty.redeemPoints - remainder;
 }
 
 export const layBy = {

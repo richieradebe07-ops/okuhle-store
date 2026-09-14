@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EmptyState, LoadFailure, Stat, StatGrid, formatDate } from "@/components/AccountBits";
+import { RewardsProgress } from "@/components/RewardsProgress";
 import { requireSession } from "@/lib/auth";
 import { loadRewards, type RewardEvent } from "@/lib/account";
 import { loyalty, pointsToNextReward } from "@/lib/loyalty";
@@ -59,6 +60,15 @@ export default async function RewardsPage() {
           detail={toNext > 0 ? `R${toNext * loyalty.randPerPoint} more of spending.` : "You're there."}
         />
       </StatGrid>
+
+      <div style={{ marginTop: "clamp(2rem, 5vw, 3rem)" }}>
+        <RewardsProgress
+          balance={rewards.balance}
+          redeemPoints={loyalty.redeemPoints}
+          redeemValueRand={loyalty.redeemValueRand}
+          randPerPoint={loyalty.randPerPoint}
+        />
+      </div>
 
       <div style={{ marginTop: "clamp(2.5rem, 6vw, 4rem)" }}>
         <h2 style={{ fontSize: "1.4rem", margin: "0 0 1.25rem" }}>Every point, accounted for</h2>

@@ -1,27 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { loyalty, pointsToNextReward } from "@/lib/loyalty";
 
 /**
  * Segmented loyalty progress bar — one block per point toward the next R100
  * reward. Fills on mount rather than being server-rendered already-full, so
  * the motion itself reads as "here's what just happened to your balance."
- * The actual duration is handled by the global prefers-reduced-motion rule
- * in app/globals.css, which collapses all transitions to ~0 — nothing extra
- * needed here.
+ * The global prefers-reduced-motion rule in app/globals.css zeroes both the
+ * duration and the delay of every transition, so the per-segment stagger
+ * below collapses to ~0 for that setting — nothing extra needed here.
+ *
+ * Reads redeemPoints/redeemValueRand/randPerPoint from lib/loyalty directly
+ * rather than taking them as props, so there is exactly one place — not two
+ * that have to be kept in sync — that knows the redemption thresholds.
  */
-export function RewardsProgress({
-  balance,
-  redeemPoints,
-  redeemValueRand,
-  randPerPoint,
-}: {
-  balance: number;
-  redeemPoints: number;
-  redeemValueRand: number;
-  randPerPoint: number;
-}) {
-  const toNext = balance <= 0 ? redeemPoints : (redeemPoints - (balance % redeemPoints)) % redeemPoints;
+export function RewardsProgress({ balance }: { balance: number }) {
+  const { redeemPoints, redeemValueRand, randPerPoint } = loyalty;
+  const toNext = pointsToNextReward(balance);
   const filled = redeemPoints - toNext;
   const ready = toNext === 0;
   const percent = Math.round((filled / redeemPoints) * 100);

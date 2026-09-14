@@ -62,12 +62,7 @@ export default async function RewardsPage() {
       </StatGrid>
 
       <div style={{ marginTop: "clamp(2rem, 5vw, 3rem)" }}>
-        <RewardsProgress
-          balance={rewards.balance}
-          redeemPoints={loyalty.redeemPoints}
-          redeemValueRand={loyalty.redeemValueRand}
-          randPerPoint={loyalty.randPerPoint}
-        />
+        <RewardsProgress balance={rewards.balance} />
       </div>
 
       <div style={{ marginTop: "clamp(2.5rem, 6vw, 4rem)" }}>

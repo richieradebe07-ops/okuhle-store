@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { PageHeader, Container } from "@/components/Section";
+import { PageHeader, Container, Section } from "@/components/Section";
 import { lookbook } from "@/lib/products";
+import { communityShots } from "@/lib/community";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 export default function GalleryPage() {
   const shots = lookbook();
+  const community = communityShots;
 
   return (
     <>
@@ -74,6 +76,44 @@ export default function GalleryPage() {
           </div>
         </div>
       </Container>
+
+      {community.length > 0 && (
+        <Section
+          eyebrow="Worn by you"
+          title="Tagged & featured"
+          lead="Real people, in real OKUHLE. Sent in rather than shot in studio — yours could be next."
+          background="var(--bg-sunken)"
+        >
+          <div
+            style={{
+              display: "grid",
+              gap: "1rem",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+            }}
+          >
+            {community.map((shot) => (
+              <div
+                key={shot.src}
+                style={{
+                  position: "relative",
+                  aspectRatio: "1 / 1",
+                  background: "#ffffff",
+                  border: "1px solid var(--line)",
+                  overflow: "hidden",
+                }}
+              >
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  fill
+                  sizes="(max-width: 700px) 50vw, 25vw"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
     </>
   );
 }

@@ -8,9 +8,9 @@ export const site = {
   heroSub:
     "Streetwear built on meaning — okuhle means “something beautiful” in Zulu. Golf tees, tees, baggy fits, sweaters and hoodies in black, white and gold, made to order out of KwaZulu-Natal.",
   contact: {
-    phoneDisplay: "076 198 1607",
+    phoneDisplay: "063 602 3630",
     // international format for wa.me links
-    whatsapp: "27761981607",
+    whatsapp: "27636023630",
     email: "hello@ohyokuhle.co.za",
     location: "Pietermaritzburg, KZN",
     address: "M70 Road, Mvundlweni, Pietermaritzburg",

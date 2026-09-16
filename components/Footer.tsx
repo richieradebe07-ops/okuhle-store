@@ -88,7 +88,20 @@ export function Footer() {
           }}
         >
           <span>
-            © {site.established} {site.name}. All rights reserved.
+            <span style={{ display: "block" }}>
+              © {site.established} {site.name}. All rights reserved.
+            </span>
+            <span style={{ display: "block", fontSize: "0.75rem", marginTop: "0.3rem" }}>
+              Website by{" "}
+              <a
+                href="https://aggrandizewebco.github.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit" }}
+              >
+                Aggrandize Web Co
+              </a>
+            </span>
           </span>
           <span>Beautifully Bold — Est. {site.established}</span>
         </div>

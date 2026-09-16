@@ -259,6 +259,15 @@ export function Header() {
           min-width: min(70vw, 320px);
           background: var(--bg);
           border-left: 1px solid var(--line);
+          /* The panel is pinned to the full viewport height (.mobile-menu is
+             inset: 0), but its content (nav links, each now a 44px tap
+             target, plus the account links) can be taller than that on a
+             real phone. Without a height + scroll of its own, the links
+             past the bottom of the screen were simply unreachable — this
+             is the actual fix, not a rewording of the layout. */
+          height: 100%;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
         }
         .mobile-menu :global(a) {
           color: var(--fg);

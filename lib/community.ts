@@ -38,4 +38,64 @@ export const communityShots: CommunityShot[] = [
     src: "/gallery/community/terminator-tee-front.jpg",
     alt: "The OKUHLE Terminator tee, front on",
   },
+  {
+    src: "/gallery/community/gold-emblem-tee-hillside-front.jpg",
+    alt: "The gold-emblem OKUHLE tee, out on the hillside overlooking Pietermaritzburg",
+  },
+  {
+    src: "/gallery/community/ohy-back-print-hillside.jpg",
+    alt: "The OHY back print, out on the hillside overlooking Pietermaritzburg",
+  },
+  {
+    src: "/gallery/community/gold-emblem-tee-brick-wall-front.jpg",
+    alt: "The gold-emblem OKUHLE tee, out and about",
+  },
+  {
+    src: "/gallery/community/gold-emblem-tee-brick-wall-side.jpg",
+    alt: "The gold-emblem OKUHLE tee, out and about",
+  },
+  {
+    src: "/gallery/community/at-the-beach.jpg",
+    alt: "OKUHLE, out at the beach",
+  },
+  {
+    src: "/gallery/community/okuhle-polo-pavilion-westville.jpg",
+    alt: "The OKUHLE polo, out at The Pavilion in Westville",
+  },
+  {
+    src: "/gallery/community/okuhle-polo-pavilion-westville-2.jpg",
+    alt: "The OKUHLE polo, out at The Pavilion in Westville",
+  },
+  {
+    src: "/gallery/community/grey-emblem-tee-indoors.jpg",
+    alt: "The grey-emblem OKUHLE tee, indoors",
+  },
+  {
+    src: "/gallery/community/grey-emblem-tee-indoors-side.jpg",
+    alt: "The grey-emblem OKUHLE tee, indoors",
+  },
+  {
+    src: "/gallery/community/grey-emblem-tee-outdoor-jacket.jpg",
+    alt: "The grey-emblem OKUHLE tee, out and about",
+  },
+  {
+    src: "/gallery/community/grey-emblem-tee-outdoor-jacket-2.jpg",
+    alt: "The grey-emblem OKUHLE tee, out and about",
+  },
+  {
+    src: "/gallery/community/grey-emblem-tee-walking.jpg",
+    alt: "The grey-emblem OKUHLE tee, out and about",
+  },
+  {
+    src: "/gallery/community/pink-tee-storefront.jpg",
+    alt: "The OKUHLE tee in pink, out and about",
+  },
+  {
+    src: "/gallery/community/okuhle-shorts-hedge.jpg",
+    alt: "OKUHLE, out and about",
+  },
+  {
+    src: "/gallery/community/toddler-gold-emblem-tee.jpg",
+    alt: "A young OKUHLE fan in the gold-emblem tee",
+  },
 ];

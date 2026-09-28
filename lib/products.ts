@@ -200,6 +200,9 @@ export const products: Product[] = [
     images: [],
     active: true,
   },
+  // The white/red/blue cap and grey/red shorts photos are colour-remapped
+  // from the one real product shot (black), not independent photography —
+  // swap them for real photos of each colourway when available.
   {
     id: "cap",
     name: "Cap",
@@ -212,10 +215,10 @@ export const products: Product[] = [
     material: "Cotton twill, structured crown.",
     care: "Spot clean with a damp cloth. Do not machine wash or tumble dry.",
     colors: [
-      { name: "White", hex: "#eff1f0" },
+      { name: "White", hex: "#eff1f0", image: "/products/cap/white.jpg" },
       { name: "Black", hex: "#111111", image: "/products/cap/black.jpg" },
-      { name: "Red", hex: "#a22927" },
-      { name: "Royal Blue", hex: "#334cc5" },
+      { name: "Red", hex: "#a22927", image: "/products/cap/red.jpg" },
+      { name: "Royal Blue", hex: "#334cc5", image: "/products/cap/blue.jpg" },
     ],
     sizes: ONE_SIZE,
     images: [],
@@ -250,8 +253,8 @@ export const products: Product[] = [
     care: "Cold machine wash. Hang dry in shade. Do not iron over the print.",
     colors: [
       { name: "Black", hex: "#111111", image: "/products/shorts/black.jpg" },
-      { name: "Grey", hex: "#5e6e7e" },
-      { name: "Red", hex: "#a22927" },
+      { name: "Grey", hex: "#5e6e7e", image: "/products/shorts/grey.jpg" },
+      { name: "Red", hex: "#a22927", image: "/products/shorts/red.jpg" },
     ],
     sizes: SIZES,
     images: [],

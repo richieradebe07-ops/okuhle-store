@@ -45,7 +45,10 @@ export type CategoryId =
   | "t-shirts"
   | "baggy-tees"
   | "sweaters"
-  | "hoodies";
+  | "hoodies"
+  | "caps"
+  | "bucket-hats"
+  | "shorts";
 
 export const categories: { id: CategoryId | "all"; label: string }[] = [
   { id: "all", label: "All" },
@@ -54,9 +57,13 @@ export const categories: { id: CategoryId | "all"; label: string }[] = [
   { id: "baggy-tees", label: "Baggy Fits" },
   { id: "sweaters", label: "Sweaters" },
   { id: "hoodies", label: "Hoodies" },
+  { id: "caps", label: "Caps" },
+  { id: "bucket-hats", label: "Bucket Hats" },
+  { id: "shorts", label: "Shorts" },
 ];
 
 const SIZES = ["S", "M", "L", "XL", "XXL"];
+const ONE_SIZE = ["One Size"];
 
 export const products: Product[] = [
   {
@@ -192,6 +199,65 @@ export const products: Product[] = [
     bulkOffer: "Buy 2 or more hoodies and the price drops again — ask on WhatsApp.",
     images: [],
     active: true,
+  },
+  {
+    // PRICE PLACEHOLDER — kept inactive until a real price is confirmed. See
+    // the note where these three products are introduced.
+    id: "cap",
+    name: "Cap",
+    category: "caps",
+    price: 0,
+    tagline: "The emblem, up top.",
+    description:
+      "A structured six-panel cap with the Okuhle emblem embroidered at the front and \"OHY\" stitched along the brim.",
+    fit: "Adjustable strap at the back — one size fits most.",
+    material: "Cotton twill, structured crown.",
+    care: "Spot clean with a damp cloth. Do not machine wash or tumble dry.",
+    colors: [
+      { name: "White", hex: "#eff1f0" },
+      { name: "Black", hex: "#111111", image: "/products/cap/black.jpg" },
+      { name: "Red", hex: "#a22927" },
+      { name: "Royal Blue", hex: "#334cc5" },
+    ],
+    sizes: ONE_SIZE,
+    images: [],
+    active: false,
+  },
+  {
+    id: "bucket-hat",
+    name: "Bucket Hat",
+    category: "bucket-hats",
+    price: 0,
+    tagline: "Shade, sorted.",
+    description:
+      "A washed-cotton bucket hat with the Okuhle emblem at the front and \"OHY\" repeated around the brim.",
+    fit: "Adjustable chin strap — one size fits most.",
+    material: "Washed cotton twill.",
+    care: "Hand wash cold. Reshape and dry flat in shade.",
+    colors: [{ name: "Black", hex: "#111111", image: "/products/bucket-hat/black.jpg" }],
+    sizes: ONE_SIZE,
+    images: [],
+    active: false,
+  },
+  {
+    id: "shorts",
+    name: "Shorts",
+    category: "shorts",
+    price: 0,
+    tagline: "Made to move.",
+    description:
+      "Lightweight shorts with a drawstring waist, zippered side pockets, and the Okuhle emblem at the leg.",
+    fit: "Regular fit, true to size.",
+    material: "Lightweight woven shell, quick-drying.",
+    care: "Cold machine wash. Hang dry in shade. Do not iron over the print.",
+    colors: [
+      { name: "Black", hex: "#111111", image: "/products/shorts/black.jpg" },
+      { name: "Grey", hex: "#5e6e7e" },
+      { name: "Red", hex: "#a22927" },
+    ],
+    sizes: SIZES,
+    images: [],
+    active: false,
   },
 ];
 

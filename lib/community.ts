@@ -98,4 +98,28 @@ export const communityShots: CommunityShot[] = [
     src: "/gallery/community/toddler-gold-emblem-tee.jpg",
     alt: "A young OKUHLE fan in the gold-emblem tee",
   },
+  {
+    src: "/gallery/community/man-black-polo-shorts-parking-lot.jpg",
+    alt: "The OKUHLE polo and shorts, out and about",
+  },
+  {
+    src: "/gallery/community/toddler-bucket-hat-yellow-longsleeve-indoors.jpg",
+    alt: "A young OKUHLE fan in the bucket hat and yellow long-sleeve, indoors",
+  },
+  {
+    src: "/gallery/community/toddler-bucket-hat-yellow-longsleeve-outdoor.jpg",
+    alt: "A young OKUHLE fan in the bucket hat and yellow long-sleeve, out on the hillside in Mvundlweni",
+  },
+  {
+    src: "/gallery/community/woman-black-shorts-seaside-street.jpg",
+    alt: "The OKUHLE shorts, out and about by the sea",
+  },
+  {
+    src: "/gallery/community/toddler-bucket-hat-yellow-longsleeve-overhead.jpg",
+    alt: "A young OKUHLE fan in the bucket hat and yellow long-sleeve",
+  },
+  {
+    src: "/gallery/community/woman-grey-shorts-emblem-hedge.jpg",
+    alt: "The OKUHLE shorts in grey, out and about",
+  },
 ];

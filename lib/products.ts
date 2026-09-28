@@ -201,12 +201,10 @@ export const products: Product[] = [
     active: true,
   },
   {
-    // PRICE PLACEHOLDER — kept inactive until a real price is confirmed. See
-    // the note where these three products are introduced.
     id: "cap",
     name: "Cap",
     category: "caps",
-    price: 0,
+    price: 150,
     tagline: "The emblem, up top.",
     description:
       "A structured six-panel cap with the Okuhle emblem embroidered at the front and \"OHY\" stitched along the brim.",
@@ -221,13 +219,13 @@ export const products: Product[] = [
     ],
     sizes: ONE_SIZE,
     images: [],
-    active: false,
+    active: true,
   },
   {
     id: "bucket-hat",
     name: "Bucket Hat",
     category: "bucket-hats",
-    price: 0,
+    price: 150,
     tagline: "Shade, sorted.",
     description:
       "A washed-cotton bucket hat with the Okuhle emblem at the front and \"OHY\" repeated around the brim.",
@@ -237,13 +235,13 @@ export const products: Product[] = [
     colors: [{ name: "Black", hex: "#111111", image: "/products/bucket-hat/black.jpg" }],
     sizes: ONE_SIZE,
     images: [],
-    active: false,
+    active: true,
   },
   {
     id: "shorts",
     name: "Shorts",
     category: "shorts",
-    price: 0,
+    price: 400,
     tagline: "Made to move.",
     description:
       "Lightweight shorts with a drawstring waist, zippered side pockets, and the Okuhle emblem at the leg.",
@@ -257,7 +255,7 @@ export const products: Product[] = [
     ],
     sizes: SIZES,
     images: [],
-    active: false,
+    active: true,
   },
 ];
 

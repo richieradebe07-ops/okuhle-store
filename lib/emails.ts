@@ -315,11 +315,12 @@ export async function sendAccountDeleted(input: {
 }
 
 /**
- * 10. New review awaiting moderation → owner.
+ * 10. A review was flagged by the automated filter → owner.
  *
- * Nothing appears on the site until this is actioned, so the alert leads with
- * the words themselves rather than making the owner click through to find out
- * whether it needs attention.
+ * Reviews publish themselves now (see docs/reviews.md) — this fires only for
+ * the minority the filter actually caught, never for a clean one that just
+ * went live. The alert leads with why it was held, since that is the one
+ * thing the owner needs to judge it from a phone without clicking through.
  */
 export async function sendOwnerReviewAlert(input: {
   displayName: string;
@@ -327,7 +328,8 @@ export async function sendOwnerReviewAlert(input: {
   body: string;
   productName: string | null;
   verifiedPurchase: boolean;
-  moderationUrl: string;
+  flaggedReason: string;
+  queueUrl: string;
 }): Promise<SendResult> {
   const { ownerEmail } = emailConfig();
   const stars = input.rating ? `${"★".repeat(input.rating)}${"☆".repeat(5 - input.rating)}` : "no rating";
@@ -335,10 +337,11 @@ export async function sendOwnerReviewAlert(input: {
 
   return sendEmail({
     to: ownerEmail,
-    subject: `New review — ${stars} on ${about}${input.verifiedPurchase ? " (verified buyer)" : ""}`,
+    subject: `Review needs a look — ${input.flaggedReason} (${about})`,
     text: [
-      `${input.displayName} left a review of ${about}.`,
+      `${input.displayName} left a review of ${about}, and the automated filter held it back.`,
       "",
+      `Flagged:  ${input.flaggedReason}`,
       input.rating ? `Rating:   ${stars} (${input.rating}/5)` : "Rating:   none given",
       `Verified: ${input.verifiedPurchase ? "yes — matched to a paid order" : "no — we could not match a purchase"}`,
       "",
@@ -346,11 +349,12 @@ export async function sendOwnerReviewAlert(input: {
       input.body,
       "",
       "———",
-      `This is NOT on the site yet. Nothing publishes without you:`,
-      input.moderationUrl,
+      `This is NOT on the site. Clean reviews publish themselves now — you're only`,
+      `ever notified about the ones the filter actually caught:`,
+      input.queueUrl,
       "",
-      `A review you reject is kept, not deleted, so there is a record of what`,
-      `was said and what you decided.`,
+      `Removing it there is kept, not deleted, so there is a record of what was`,
+      `said and what you decided.`,
       footer(),
     ].join("\n"),
   });

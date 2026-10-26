@@ -8,7 +8,7 @@ import { formatRand, site, siteUrl, whatsappLink } from "@/lib/site";
 import { layBy, layByMonthly, loyalty, pointsFor } from "@/lib/loyalty";
 import { payfastConfigured } from "@/lib/payfast";
 import { ReviewForm } from "@/components/ReviewForm";
-import { ReviewList, RatingSummaryLine } from "@/components/ReviewList";
+import { ReviewList, RatingBreakdown } from "@/components/ReviewList";
 import { publishedForProduct, summaryForProduct } from "@/lib/reviews";
 
 /**
@@ -167,21 +167,11 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         id="reviews"
         style={{ marginTop: "clamp(3rem, 8vw, 5rem)", scrollMarginTop: "5.5rem" }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: "1rem",
-            flexWrap: "wrap",
-            borderBottom: "1px solid var(--line)",
-            paddingBottom: "1rem",
-          }}
-        >
-          <h2 style={{ fontSize: "clamp(1.6rem, 4vw, 2.2rem)", margin: 0 }}>
+        <div style={{ borderBottom: "1px solid var(--line)", paddingBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "clamp(1.6rem, 4vw, 2.2rem)", margin: "0 0 1.25rem" }}>
             What people say
           </h2>
-          {summary && <RatingSummaryLine summary={summary} size="1.1rem" />}
+          {summary && <RatingBreakdown summary={summary} />}
         </div>
 
         <div

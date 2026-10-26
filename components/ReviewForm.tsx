@@ -9,9 +9,18 @@ import { useVisitorState } from "./VisitorStateProvider";
 /**
  * Leave a review, or a comment about the brand.
  *
- * Two things are said plainly rather than discovered later:
- *  - nothing appears until a person reads it
- *  - the name you type is what the public sees, and the email never is
+ * Reviews go live immediately now (V12, 26 Oct 2026) — an automated filter
+ * runs first, and only holds back what it actually catches (a link, a
+ * duplicate, that kind of thing) for a quick human look. The form says so
+ * honestly rather than claiming either "a person reads every review" (no
+ * longer true) or "instant, no exceptions" (also not true).
+ *
+ * `website` is a honeypot: a field no real visitor can see or tab to, that a
+ * simple bot filling in every input will. `renderedAt` is this component's
+ * mount time, sent back on submit so the server can tell a review written in
+ * four seconds from one written in four minutes — part of the bot-timing
+ * check in lib/reviewFilter.ts. Neither changes anything a real customer sees
+ * or does.
  *
  * The order-number field is optional and only offered to people who aren't
  * signed in — a session already proves the purchase without anyone typing
@@ -36,6 +45,8 @@ export function ReviewForm({
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [order, setOrder] = useState(orderId ?? "");
+  const [website, setWebsite] = useState(""); // honeypot — stays empty for real visitors
+  const [renderedAt] = useState(() => Date.now());
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState("");
@@ -61,6 +72,8 @@ export function ReviewForm({
           displayName: displayName.trim() || undefined,
           email: email.trim() || undefined,
           orderId: order.trim() || undefined,
+          website,
+          renderedAt,
         }),
       });
       const data = await res.json();
@@ -80,6 +93,27 @@ export function ReviewForm({
   return (
     <form onSubmit={submit} style={{ maxWidth: "34rem" }}>
       {error && <Notice tone="error">{error}</Notice>}
+
+      {/* Honeypot. Off-screen and out of the tab order rather than
+          display:none — some bots skip display:none, fewer skip this — but
+          still invisible and unreachable for a real visitor tabbing through
+          the form. autoComplete="off" plus an unusual field name so no
+          browser autofill ever populates it for them by accident. */}
+      <div
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden" }}
+      >
+        <label htmlFor="review-website">Leave this field blank</label>
+        <input
+          id="review-website"
+          type="text"
+          name="review-website"
+          autoComplete="off"
+          tabIndex={-1}
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+      </div>
 
       {productId && (
         <div style={{ marginBottom: "1.25rem" }}>
@@ -107,7 +141,7 @@ export function ReviewForm({
 
       <Field
         label="Name to show"
-        hint="This appears publicly with your review. A first name is fine."
+        hint="First name and last initial is plenty — e.g. “Thabo M.” Never your full name, and this is what the public sees."
       >
         <input
           type="text"
@@ -155,9 +189,9 @@ export function ReviewForm({
       </button>
 
       <p style={{ color: "var(--fg-muted)", fontSize: "0.78rem", marginTop: "0.9rem" }}>
-        A person reads every review before it goes up, so it won&apos;t appear straight away. We
-        publish the good and the bad — what we don&apos;t publish is abuse, or anything naming
-        someone else.{" "}
+        Your review goes up right away — we don&apos;t sit on it. We publish the good and the bad;
+        the only thing an automated check holds back for a quick look is spam, abuse, or anything
+        naming someone else, and even then it&apos;s usually within minutes.{" "}
         {!signedIn && (
           <>
             <Link href="/login" style={{ color: "var(--fg-muted)" }}>

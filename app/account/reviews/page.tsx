@@ -1,33 +1,39 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireSession } from "@/lib/auth";
-import { isOwnerEmail, pendingReviews, type ModerationReview } from "@/lib/reviews";
+import { isOwnerEmail, flaggedQueue, liveReviews, type ModerationReview } from "@/lib/reviews";
 import { products } from "@/lib/products";
 import { LoadFailure } from "@/components/AccountBits";
 import { ModerationQueue } from "./ModerationQueue";
 
 export const metadata: Metadata = {
-  title: "Reviews to approve",
+  title: "Reviews",
   robots: { index: false, follow: false },
 };
 
 /**
  * Owner-only moderation.
  *
- * "Owner" is whoever signs in with OWNER_EMAIL — the address already
- * configured for order alerts. There is one person running this shop, so a
- * role column in the database would be ceremony without benefit.
+ * Reviews auto-publish now (V12, 26 Oct 2026) — this page is no longer the
+ * gate everything passes through. It is two much smaller things:
  *
- * A non-owner gets a 404 rather than a 403, so the page cannot be used to
- * work out who the owner is.
+ *   1. The flagged queue — only what the automated filter actually caught.
+ *      Should usually be short.
+ *   2. Every currently-live review, with a Remove button — the backstop for
+ *      whatever the filter missed.
+ *
+ * "Owner" is whoever signs in with OWNER_EMAIL — the address already
+ * configured for order alerts. A non-owner gets a 404 rather than a 403, so
+ * the page cannot be used to work out who the owner is.
  */
 export default async function ReviewModerationPage() {
   const session = await requireSession("/account/reviews");
   if (!isOwnerEmail(session.user.email)) notFound();
 
-  let queue: ModerationReview[] | null = null;
+  let flagged: ModerationReview[] | null = null;
+  let live: ModerationReview[] | null = null;
   try {
-    queue = await pendingReviews();
+    [flagged, live] = await Promise.all([flaggedQueue(), liveReviews()]);
   } catch (err) {
     console.error("[account/reviews] load failed:", err);
   }
@@ -36,17 +42,16 @@ export default async function ReviewModerationPage() {
 
   return (
     <>
-      <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.4rem)", margin: "0 0 0.75rem" }}>
-        Reviews to approve
-      </h1>
+      <h1 style={{ fontSize: "clamp(1.8rem, 5vw, 2.4rem)", margin: "0 0 0.75rem" }}>Reviews</h1>
       <p style={{ color: "var(--fg-muted)", margin: "0 0 2.5rem", maxWidth: "42rem" }}>
-        Nothing reaches the site until you say so. You get an email whenever one arrives.
+        Clean reviews publish themselves now. You only ever land here for the ones the automated
+        filter caught, or to pull something already live.
       </p>
 
-      {queue ? (
-        <ModerationQueue initial={queue} productNames={productNames} />
+      {flagged && live ? (
+        <ModerationQueue initialFlagged={flagged} initialLive={live} productNames={productNames} />
       ) : (
-        <LoadFailure what="review queue" />
+        <LoadFailure what="reviews" />
       )}
     </>
   );

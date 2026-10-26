@@ -43,7 +43,7 @@ export function AccountNav({ isOwner = false }: { isOwner?: boolean }) {
         borderBottom: "1px solid var(--line)",
       }}
     >
-      {(isOwner ? [...links, { href: "/account/reviews", label: "Approve reviews" }] : links).map((link) => {
+      {(isOwner ? [...links, { href: "/account/reviews", label: "Reviews" }] : links).map((link) => {
         const active = pathname === link.href;
         return (
           <Link

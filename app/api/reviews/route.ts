@@ -12,6 +12,12 @@ const MAX_BODY = 2000;
 /**
  * Leave a review or a comment.
  *
+ * AUTO-PUBLISH: a clean submission is live the moment this returns. The
+ * automated filter (lib/reviewFilter.ts) runs inside submitReview; a flagged
+ * one is written invisibly, same as the old model, and the owner is emailed —
+ * but ONLY the flagged minority, never a clean one that just published
+ * itself. See docs/reviews.md.
+ *
  * THE VERIFIED BADGE IS NEVER TAKEN FROM THE REQUEST. It is worked out here,
  * by matching a paid order — either the signed-in customer's, or an order
  * number plus the email on that order. A client-supplied flag would make the
@@ -25,8 +31,10 @@ export async function POST(request: Request) {
   const ip = clientIp(request);
 
   // Reviews are a once-in-a-while act for a real person and a firehose for a
-  // spam script, so this is tight.
-  const limit = rateLimit(`review:${ip}`, 3, 60 * 60);
+  // spam script, so this is tight. Unmoderated auto-publish makes this limit
+  // load-bearing, not cosmetic — it is the thing standing between a bot and
+  // the homepage now, alongside the filter itself.
+  const limit = rateLimit(`review-ip:${ip}`, 3, 60 * 60);
   if (!limit.allowed) {
     return NextResponse.json(
       { error: "You've left a few already. Try again later, or message us on WhatsApp." },
@@ -41,12 +49,25 @@ export async function POST(request: Request) {
     displayName?: unknown;
     email?: unknown;
     orderId?: unknown;
+    /** Honeypot — real visitors never fill this in. See components/ReviewForm.tsx. */
+    website?: unknown;
+    /** ms since the form rendered, client-measured. Part of the bot-timing check. */
+    renderedAt?: unknown;
   };
   try {
     payload = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
+
+  // A filled honeypot is checked before anything else costs a database
+  // round trip — but still recorded as a flagged review rather than bounced,
+  // so a run of catches shows up as a pattern in the queue instead of
+  // vanishing with no trace.
+  const honeypot = typeof payload.website === "string" ? payload.website : "";
+
+  const renderedAt = typeof payload.renderedAt === "number" ? payload.renderedAt : null;
+  const msSincePageLoad = renderedAt !== null ? Date.now() - renderedAt : null;
 
   /* ---- what it's about ---- */
   let productId: string | null = null;
@@ -111,6 +132,19 @@ export async function POST(request: Request) {
       : null;
   const email = user?.email ?? suppliedEmail;
 
+  // Same reasoning as the IP limit, keyed on the other thing a submission
+  // carries — catches a script that rotates IPs but reuses (or fakes) one
+  // address, without punishing everyone behind the same office or mobile NAT.
+  if (email) {
+    const emailLimit = rateLimit(`review-email:${email}`, 3, 60 * 60);
+    if (!emailLimit.allowed) {
+      return NextResponse.json(
+        { error: "You've left a few already. Try again later, or message us on WhatsApp." },
+        { status: 429, headers: { "Retry-After": String(emailLimit.retryAfter) } }
+      );
+    }
+  }
+
   /* ---- the badge, derived and never trusted from the client ---- */
   const proof = await findPaidPurchase({
     productId,
@@ -129,6 +163,8 @@ export async function POST(request: Request) {
     orderId: proof?.orderId ?? null,
     verifiedPurchase: Boolean(proof),
     ipAddress: ipForAudit(request),
+    honeypot,
+    msSincePageLoad,
   });
 
   if (!result.ok) {
@@ -147,21 +183,29 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Couldn't save that. Try again shortly." }, { status: 502 });
   }
 
-  // The owner needs to know something is waiting, since nothing self-publishes.
-  const alert = await sendOwnerReviewAlert({
-    displayName,
-    rating,
-    body,
-    productName: productId ? (getProduct(productId)?.name ?? productId) : null,
-    verifiedPurchase: Boolean(proof),
-    moderationUrl: `${siteUrl(request)}/account/reviews`,
-  });
-  if (!alert.ok) console.warn("[reviews] owner alert not sent:", alert.error);
+  // Only the flagged minority gets an email — a clean review already
+  // published itself, and notifying the owner on every single one defeats
+  // the point of taking him out of the loop.
+  if (!result.published && result.flaggedReason) {
+    const alert = await sendOwnerReviewAlert({
+      displayName,
+      rating,
+      body,
+      productName: productId ? (getProduct(productId)?.name ?? productId) : null,
+      verifiedPurchase: Boolean(proof),
+      flaggedReason: result.flaggedReason,
+      queueUrl: `${siteUrl(request)}/account/reviews`,
+    });
+    if (!alert.ok) console.warn("[reviews] owner alert not sent:", alert.error);
+  }
+
+  const verifiedNote = proof ? " Verified buyers get a badge on their review." : "";
 
   return NextResponse.json({
-    message: proof
-      ? "Thank you — that's with us. Verified buyers get a badge on their review once it's up."
-      : "Thank you — that's with us.",
+    message: result.published
+      ? `Thank you — it's up now.${verifiedNote}`
+      : `Thank you — that's with us. It needs a quick human look before it goes up, so it'll appear shortly rather than immediately.${verifiedNote}`,
     verified: Boolean(proof),
+    published: result.published,
   });
 }

@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container, PageHeader, Section } from "@/components/Section";
 import { ReviewForm } from "@/components/ReviewForm";
-import { ReviewList, RatingSummaryLine } from "@/components/ReviewList";
+import { ReviewList, RatingBreakdown } from "@/components/ReviewList";
 import { Stars } from "@/components/Stars";
-import { publishedReviews, ratingSummaries } from "@/lib/reviews";
+import { publishedReviews, ratingSummaries, summariseRatings } from "@/lib/reviews";
 import { getProduct } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Reviews",
   description:
-    "What OKUHLE customers say about the pieces they have worn — the good and the bad, read by a person before it goes up.",
+    "What OKUHLE customers say about the pieces they have worn — the good and the bad, published as they're written.",
 };
 
 /** Same reasoning as the product pages: published reviews appear on their own. */
@@ -22,30 +22,26 @@ export default async function ReviewsPage() {
   const productReviews = reviews.filter((r) => r.productId);
   const comments = reviews.filter((r) => !r.productId);
 
-  // One overall figure, across every rated review.
+  // One overall figure, across every rated review — reuses the same
+  // averaging and star-distribution logic as the per-product summaries by
+  // collapsing every rated review into a single bucket.
   const rated = productReviews.filter((r) => r.rating !== null);
-  const overall =
-    rated.length > 0
-      ? {
-          average:
-            Math.round((rated.reduce((sum, r) => sum + (r.rating ?? 0), 0) / rated.length) * 10) / 10,
-          count: rated.length,
-          verified: rated.filter((r) => r.verifiedPurchase).length,
-        }
-      : null;
+  const overall = summariseRatings(
+    rated.map((r) => ({ product_id: "all", rating: r.rating, verified_purchase: r.verifiedPurchase }))
+  ).all ?? null;
 
   return (
     <>
       <PageHeader
         eyebrow="Reviews"
         title="What people say"
-        lead="Everything here was written by someone who wore the clothes. We publish the good and the bad — a person reads each one first, and nothing gets edited."
+        lead="Everything here was written by someone who wore the clothes. We publish the good and the bad, and it goes up as soon as it's written."
       />
 
       {overall && (
         <Container style={{ paddingTop: "clamp(1.5rem, 4vw, 2.5rem)" }}>
           <div className="card" style={{ padding: "1.75rem", display: "inline-block" }}>
-            <RatingSummaryLine summary={overall} size="1.3rem" />
+            <RatingBreakdown summary={overall} />
           </div>
         </Container>
       )}
